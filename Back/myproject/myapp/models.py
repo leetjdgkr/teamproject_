@@ -6,3 +6,9 @@ class Item(models.Model):
 
     def __str__(self):
         return self.name  # Item의 이름을 반환
+
+
+class Info(models.Model):
+    title_text = models.CharField(max_length=50)
+    content_text = models.CharField(max_length=200)
+    create_date = models.DateTimeField('date published')
