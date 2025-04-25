@@ -4,30 +4,40 @@ const Option = ({ selectedDate }) => {
   const [records, setRecords] = useState([]);
   const [location, setLocation] = useState("");
   const [workTime, setWorkTime] = useState("");
-  const [locationsList, setLocationsList] = useState([]);
-  const [showDropdown, setShowDropdown] = useState(false);
+  const [locationsList] = useState([
+    "삼성전자(평택)", "삼성전자(기흥)", "삼성전자(아산)", "삼성전자(서울)",
+    "LG전자(대전)", "LG전자(구미)", "SK하이닉스(이천)", "삼성디스플레이(온양)"
+  ]);
+  const [showLocations, setShowLocations] = useState(false);
 
-  const fetchLocations = () => {
-    // 이 부분에 실제로 필요한 장소 목록을 불러오거나 고정값을 설정합니다.
-    const data = [ "삼성전자(평택)", "삼성전자(기흥)", "삼성전자(아산)", "삼성전자(서울)" ];
-    setLocationsList(data);
-    setShowDropdown(true);
-  };
+  // 실시간으로 검색된 리스트를 필터링하는 함수
+  const filteredLocations = locationsList.filter((loc) =>
+    loc.toLowerCase().includes(location.toLowerCase()) // 사용자가 입력한 값으로 필터링
+  );
 
   const handleSelectLocation = (selectedLocation) => {
     setLocation(selectedLocation);
-    setShowDropdown(false);
+    setShowLocations(false); // 선택 후 리스트를 닫음
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!location || !workTime) return;
 
+    const formattedDate = selectedDate instanceof Date
+      ? selectedDate.toLocaleDateString()
+      : `${selectedDate.year}년 ${selectedDate.month}월 ${selectedDate.day}일`;
+
     const newRecord = {
-      date: selectedDate.toLocaleDateString(), // 선택된 날짜 표시
+      date: formattedDate,
       location,
       workTime,
     };
+
+    console.log(`날짜: ${newRecord.date}`);
+    console.log(`업체/장소: ${newRecord.location}`);
+    console.log(`작업 시간: ${newRecord.workTime}`);
+
     setRecords([...records, newRecord]);
 
     setLocation("");
@@ -38,45 +48,54 @@ const Option = ({ selectedDate }) => {
     <div className="max-w-lg mx-auto mt-10 p-5 border rounded-lg shadow-lg bg-white">
       <h2 className="text-xl font-bold mb-4">작업 기록</h2>
       <form onSubmit={handleSubmit} className="space-y-3 relative">
-        {/* 업체/장소 입력과 드롭다운 버튼 */}
+        {/* 날짜 입력 */}
         <div className="relative">
           <input
             type="text"
             placeholder="날짜"
-            value={ selectedDate ? `${selectedDate.year}년 ${selectedDate.month}월 ${selectedDate.day}일` : "" }
-            onChange={(e) => setLocation(e.target.value)}
+            value={selectedDate ? `${selectedDate.year}년 ${selectedDate.month}월 ${selectedDate.day}일` : ""}
             className="w-full p-2 border rounded"
-            required
+            readOnly
           />
+        </div>
+
+        {/* 업체/장소 선택 */}
+        <div className="relative">
           <input
             type="text"
             placeholder="업체/장소"
             value={location}
-            onChange={(e) => setLocation(e.target.value)}
+            onChange={(e) => setLocation(e.target.value)}  // 입력값에 따라 필터링
             className="w-full p-2 border rounded"
             required
           />
           <button
             type="button"
-            onClick={fetchLocations}
+            onClick={() => setShowLocations(!showLocations)}
             className="absolute right-2 top-2 bg-gray-300 p-1 rounded"
           >
             +
           </button>
-          {showDropdown && (
-            <ul className="absolute left-0 mt-1 w-full border rounded bg-white shadow-lg">
-              {locationsList.map((loc, index) => (
-                <li
-                  key={index}
-                  className="p-2 cursor-pointer hover:bg-gray-200"
-                  onClick={() => handleSelectLocation(loc)}
-                >
-                  {loc}
-                </li>
-              ))}
-            </ul>
+
+          {/* 장소 리스트 토글 */}
+          {showLocations && location && (  // location이 비어있지 않으면 필터링된 장소들만 표시
+            <div className="absolute left-0 mt-1 w-full max-h-60 overflow-y-auto border rounded bg-white shadow-lg transition-all duration-300 ease-in-out">
+              {/* 필터링된 장소 리스트 */}
+              <div className="grid grid-cols-2 gap-2 p-2">
+                {filteredLocations.map((loc, index) => (
+                  <div
+                    key={index}
+                    className={`cursor-pointer p-3 text-center border rounded-lg ${location === loc ? 'bg-blue-500 text-white' : 'bg-gray-100'}`}
+                    onClick={() => handleSelectLocation(loc)}
+                  >
+                    {loc}
+                  </div>
+                ))}
+              </div>
+            </div>
           )}
         </div>
+
         {/* 작업 시간 입력 */}
         <input
           type="text"
@@ -104,4 +123,3 @@ const Option = ({ selectedDate }) => {
 };
 
 export default Option;
-
