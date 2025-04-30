@@ -19,7 +19,7 @@ const Option = ({ selectedDate }) => {
   const handleSelectLocation = (selectedLocation) => {
     setLocation(selectedLocation);
     setShowLocations(false); // 선택 후 리스트를 닫음
-  };
+  }; 
 
   const handleSubmit = (e) => {
     e.preventDefault();
