@@ -60,7 +60,7 @@ const Calendar = () => {
 
   const hadleOntarget = (year,month, day) => {
     setSelectedDate({"year":year, "month":month, "day":day});
-    setShowOption(true);
+    setShowOption(true); 
   };
     return (
         <div className="calenderbk">
