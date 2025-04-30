@@ -9,6 +9,5 @@ class Item(models.Model):
 
 
 class Info(models.Model):
-    title_text = models.CharField(max_length=50)
-    content_text = models.CharField(max_length=200)
-    create_date = models.DateTimeField('date published')
+    user_id = models.CharField(max_length=50)
+    password = models.CharField(max_length=100, default='abcd1234')
