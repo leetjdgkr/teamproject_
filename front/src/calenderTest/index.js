@@ -1,4 +1,5 @@
 import { useState } from "react";
+import './activity.css'
 
 const Option = ({ selectedDate }) => {
   const [records, setRecords] = useState([]);
@@ -18,7 +19,7 @@ const Option = ({ selectedDate }) => {
   const handleSelectLocation = (selectedLocation) => {
     setLocation(selectedLocation);
     setShowLocations(false); // 선택 후 리스트를 닫음
-  };
+  }; 
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -44,7 +45,7 @@ const Option = ({ selectedDate }) => {
   };
 
   return (
-    <div className="max-w-lg mx-auto mt-10 p-5 border rounded-lg shadow-lg bg-white">
+    <div className="activit y max-w-lg mx-auto mt-10 p-5 border rounded-lg shadow-lg bg-white">
       <h2 className="text-xl font-bold mb-4">작업 기록</h2>
       <form onSubmit={handleSubmit} className="space-y-3 relative">
         {/* 날짜 입력 */}
