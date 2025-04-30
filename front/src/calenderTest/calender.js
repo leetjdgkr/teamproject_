@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { subMonths, addMonths } from "date-fns";
 import Option from "./index";
+import './calender.css';
 
 const groupDatesByWeek = (startDay, endDay) => {
   const weeks = [];
@@ -42,6 +43,7 @@ const groupDatesByWeek = (startDay, endDay) => {
 const Calendar = () => {
   const [date, setDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(null);
+  const [showOption, setShowOption] = useState(false);
 
   const year = date.getFullYear();
   const month = date.getMonth();
@@ -58,13 +60,16 @@ const Calendar = () => {
 
   const hadleOntarget = (year,month, day) => {
     setSelectedDate({"year":year, "month":month, "day":day});
+    setShowOption(true);
   };
     return (
-        <div>
-        <div>
-            <button onClick={() => setDate(subMonths(date, 1))}>이전 달</button>
-            <span>{year}년 {month + 1}월</span>
-            <button onClick={() => setDate(addMonths(date, 1))}>다음 달</button>
+        <div className="calenderbk">
+          <div className="calender_sub ">
+            <div className="calender-check">
+              <button onClick={() => setDate(subMonths(date, 1))}>이전 달</button>
+              <span>{year}년 {month + 1}월</span>
+              <button onClick={() => setDate(addMonths(date, 1))}>다음 달</button>
+            </div>
             <table>
                 <thead>
                 <tr>
@@ -81,10 +86,11 @@ const Calendar = () => {
                 {weeks.map((week, i) => (
                     <tr key={i}>
                     {week.map((day, j) => (
-                        <td key={j} onClick={()=>hadleOntarget(year,day.getMonth()+1,day.getDate())}
+                        <td key={j} onClick={() => hadleOntarget(year, day.getMonth() + 1, day.getDate())}
                             style={{
-                                color: day.getMonth() === month ? "black" : "lightgray"
-                            }}
+                              color: day.getMonth() !== month  ? "lightgray" 
+                              : (day.getDay() === 0 ? "red" : (day.getDay() === 6 ? "blue" : "black"))
+                          }}
                         >
                         {day.getDate()}
                         </td>
@@ -94,7 +100,7 @@ const Calendar = () => {
                 </tbody>
         </table>
       </div>
-      <Option selectedDate={selectedDate} />
+      {showOption && <Option selectedDate={selectedDate} />}
     </div>
   );
 };
