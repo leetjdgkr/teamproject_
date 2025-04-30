@@ -34,9 +34,8 @@ const Option = ({ selectedDate }) => {
       workTime,
     };
 
-    console.log(`날짜: ${newRecord.date}`);
-    console.log(`업체/장소: ${newRecord.location}`);
-    console.log(`작업 시간: ${newRecord.workTime}`);
+    // JSON 형태로 콘솔 출력
+    console.log(JSON.stringify(newRecord, null, 2));
 
     setRecords([...records, newRecord]);
 
@@ -123,3 +122,4 @@ const Option = ({ selectedDate }) => {
 };
 
 export default Option;
+
