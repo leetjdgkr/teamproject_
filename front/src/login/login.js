@@ -62,12 +62,11 @@ const Login = () => {
         });
 
         if (isValid)  {
-            try{
-               await HandleLogin(id,password,otp,role);
-               navigate("/data");
-            }
-            catch(error){
-
+            const loginsuccess = await HandleLogin(id,password,otp,role);
+            if(loginsuccess){
+                navigate('/data');
+            }else{
+                console.log('실패');
             }
         } else {
             console.log("로그인 실패!");

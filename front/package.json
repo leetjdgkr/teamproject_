@@ -15,7 +15,7 @@
     "web-vitals": "^4.2.4"
   },
   "scripts": {
-    "start-server": "cd ../back/common_db/myproject&& python manage.py runserver",
+    "start-server": "cd ../back/myproject && python manage.py runserver",
     "start-client": "react-scripts start",
     "start": "concurrently \"npm run start-server\" \"npm run start-client\"",
     "build": "react-scripts build",

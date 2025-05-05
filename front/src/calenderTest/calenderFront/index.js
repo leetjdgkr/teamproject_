@@ -1,5 +1,5 @@
 import { useState } from "react";
-import './activity.css'
+import '../css/activity.css'
 
 const Option = ({ selectedDate }) => {
   const [records, setRecords] = useState([]);

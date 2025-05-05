@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { subMonths, addMonths } from "date-fns";
 import Option from "./index";
-import './calender.css';
+import '../css/calender.css';
 
 const groupDatesByWeek = (startDay, endDay) => {
   const weeks = [];
