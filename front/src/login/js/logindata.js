@@ -1,11 +1,11 @@
 import axios from "axios";
 
-export const HandleLogin = async (id, password) => {
+export const HandleLogin = async (user_id, password) => {
     try {
-        const response = await axios.post("https://httpbin.org/post", {
-            type: "Info",
+        const response = await axios.post("http://127.0.0.1:8000/api/items/", {
+            type: "info",
             data: {
-                id,
+                user_id,
                 password,
             }
         });

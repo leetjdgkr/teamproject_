@@ -26,7 +26,7 @@ class BaseModelHandler(APIView):
     
 class ItemUserProfileHandler(BaseModelHandler):
     def post(self, request):
-        print("✅ 받은 데이터:", request.data)
+        print("받은 데이터:", request.data)
 
         data_type = request.data.get('type')
         data_content = request.data.get('data')  # 여기 추가!
