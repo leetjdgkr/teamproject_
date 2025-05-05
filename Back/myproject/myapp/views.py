@@ -12,7 +12,7 @@ class BaseModelHandler(APIView):
         if data_type == 'item':
             serializer = ItemSerializer(data=data)
             model = Item
-        elif data_type == 'user_profile':
+        elif data_type == 'info':
             serializer = InfoSerializer(data=data)
             model = Info
         else:
@@ -27,9 +27,11 @@ class BaseModelHandler(APIView):
 class ItemUserProfileHandler(BaseModelHandler):
     def post(self, request):
         print("✅ 받은 데이터:", request.data)
-        data_type = request.data.get('type')  # 데이터 타입 구분 (예: 'item' 또는 'user_profile')
-        
-        serializer, instance = self.handle_data(data_type, request.data)
+
+        data_type = request.data.get('type')
+        data_content = request.data.get('data')  # 여기 추가!
+
+        serializer, instance = self.handle_data(data_type, data_content)  # 수정된 부분!
 
         if serializer:
             return Response({
