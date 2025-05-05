@@ -12,7 +12,7 @@ export const HandleLogin = async (id, password, otp, role) => {
         // 응답에서 성공 여부 확인
         if (    response.data.json.id === "testid" &&
                 response.data.json.password === "testpw" &&
-                response.data.json.otp === "123456" ) {
+                response.data.json.otp === "123456"  ) {
             console.log("로그인 성공!");
             return true;
         } else {
