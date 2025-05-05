@@ -62,7 +62,7 @@ const Login = () => {
         });
 
         if (isValid)  {
-            const loginsuccess = await HandleLogin(id,password,otp,role);
+            const loginsuccess = await HandleLogin(id,password);
             if(loginsuccess){
                 navigate('/data');
             }else{

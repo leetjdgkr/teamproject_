@@ -30,18 +30,32 @@ const Option = ({ selectedDate }) => {
       : `${selectedDate.year}년 ${selectedDate.month}월 ${selectedDate.day}일`;
 
     const newRecord = {
-      date: formattedDate,
-      location,
-      workTime,
+      type:"Info",
+        data :{ 
+          calender_date: formattedDate,
+          location,
+          workTime,
+        }
     };
 
-    // JSON 형태로 콘솔 출력
-    console.log(JSON.stringify(newRecord, null, 2));
-
-    setRecords([...records, newRecord]);
-
-    setLocation("");
-    setWorkTime("");
+   fetch('https://httpbin.org/post', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(newRecord), // 데이터가 정확히 JSON 형식으로 전송
+    })
+      .then((response) => response.json()) // 응답을 JSON으로 파싱
+      .then((data) => {
+        console.log('서버 응답:', data); // 서버 응답 확인
+        console.log('서버에서 받은 JSON:', data.json); // 서버에서 받은 JSON 출력
+        setRecords([...records, newRecord]);
+        setLocation("");
+        setWorkTime("");
+      })
+      .catch((error) => {
+        console.error('전송 중 오류 발생:', error);
+      });
   };
 
   return (
