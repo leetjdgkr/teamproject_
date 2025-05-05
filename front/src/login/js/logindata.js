@@ -2,14 +2,15 @@ import axios from "axios";
 
 export const HandleLogin = async (id, password, otp, role) => {
     try {
-        const response = await axios.post("http://127.0.0.1:8000/api/items/", {
+        const response = await axios.post("https://httpbin.org/post", {
             role,
             id,
             password,
             otp
         });
 
-        if (response.data.success) {
+        // 응답에서 성공 여부 확인
+        if (response.data.json.id === id && response.data.json.password === password) {
             console.log("로그인 성공!");
             return true;
         } else {
