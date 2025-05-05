@@ -1,28 +1,40 @@
-from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .serializers import ItemSerializer
+from rest_framework import status
+from .models import Item, Info
+from .serializers import ItemSerializer, InfoSerializer
 
-class ItemList(APIView):
-    def get(self, request):
-        items = [
-            {"id": 1, "name": "Item 1", "description": "Description 1"},
-            {"id": 2, "name": "Item 2", "description": "Description 2"},
-        ]
-        serializer = ItemSerializer(items, many=True)
-        return Response(serializer.data)
+class BaseModelHandler(APIView):
+    def handle_data(self, data_type, data):
+        """
+        데이터 유형에 맞는 모델과 serializer를 선택하여 처리하는 함수
+        """
+        if data_type == 'item':
+            serializer = ItemSerializer(data=data)
+            model = Item
+        elif data_type == 'user_profile':
+            serializer = InfoSerializer(data=data)
+            model = Info
+        else:
+            return None, None
 
+        if serializer.is_valid():
+            instance = serializer.save()  # 데이터베이스에 저장
+            return serializer, instance
 
-# from rest_framework import status
-# from rest_framework.response import Response
-# from rest_framework.views import APIView
-# from .models import Item
-# from .serializers import ItemSerializer
+        return None, serializer.errors
+    
+class ItemUserProfileHandler(BaseModelHandler):
+    def post(self, request):
+        print("✅ 받은 데이터:", request.data)
+        data_type = request.data.get('type')  # 데이터 타입 구분 (예: 'item' 또는 'user_profile')
+        
+        serializer, instance = self.handle_data(data_type, request.data)
 
-# class ItemCreate(APIView):
-#     def post(self, request):
-#         serializer = ItemSerializer(data=request.data)
-#         if serializer.is_valid():
-#             serializer.save()  # 데이터베이스에 저장
-#             return Response(serializer.data, status=status.HTTP_201_CREATED)  # 성공적으로 저장되었으면 응답
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)  # 오류가 있으면 오류 응답
+        if serializer:
+            return Response({
+                'message': f'{data_type} 저장 완료!',
+                'data': serializer.data
+            }, status=status.HTTP_201_CREATED)
+
+        return Response(instance, status=status.HTTP_400_BAD_REQUEST)

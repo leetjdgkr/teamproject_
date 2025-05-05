@@ -1,16 +1,7 @@
 # myapp/urls.py
 from django.urls import path
-from .views import ItemList
+from .views import ItemUserProfileHandler
 
 urlpatterns = [
-    path('items/', ItemList.as_view(), name='item-list'),
+    path('items/', ItemUserProfileHandler.as_view(), name='item-userprofile-handler'),
 ]
-
-
-# from django.urls import path
-# from .views import ItemList, ItemCreate
-
-# urlpatterns = [
-#     path('api/items/', ItemList.as_view(), name='item-list'),  # GET 요청
-#     path('api/items/create/', ItemCreate.as_view(), name='item-create'),  # POST 요청
-# ]
