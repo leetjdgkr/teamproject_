@@ -1,6 +1,6 @@
 import { HandleLogin } from "./logindata";
 
-export const validation = ({ id, password, rgxCnd, setErrors , role, otp }) => {
+export const validation = ({ id, password, otp, role , rgxCnd, setErrors, setId, setPassword, setOtp, setRole }) => {
 
     const idRegex = role === "admin" ? rgxCnd.adminId : rgxCnd.staffId;
     const passwordRegex = role === "admin" ? rgxCnd.adminPassword : rgxCnd.staffPw;
@@ -14,11 +14,12 @@ export const validation = ({ id, password, rgxCnd, setErrors , role, otp }) => {
     };
 
     setErrors(newErrors);
+   
 
-    if (newErrors.idError || newErrors.pwError) {
+    if (newErrors.idError || newErrors.pwError || newErrors.otpError) {
         return false; 
     }
     setErrors({});
-    HandleLogin({ id, password });   
+    HandleLogin({ id, password, otp, role });   
     return true; 
 };
