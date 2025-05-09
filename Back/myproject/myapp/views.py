@@ -36,7 +36,7 @@ class ItemUserProfileHandler(BaseModelHandler):
     def post(self, request):
         print("받은 데이터:", request.data)
 
-        data_type = request.data.get('type')
+        data_type = request.data.get('data_type')
         data_content = request.data.get('data')
 
         serializer, instance = self.handle_data(data_type, data_content)

@@ -66,7 +66,7 @@ const Login = () => {
         if (isValid)  {
             const loginsuccess = await HandleLogin(id,password);
             if(loginsuccess){
-                const login_check_suceess = await FetchUserData();
+                const login_check_suceess = await FetchUserData(id);
                 if(login_check_suceess.success){
                     setlogin_check_message(login_check_suceess.message);
                     // navigate('/data');
