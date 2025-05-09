@@ -1,16 +1,22 @@
-import axios from "axios";
-
-export const HandleLogin = async (user_id, password) => {
+export const HandleLogin = async (id, password) => {
     try {
-        const response = await axios.post("http://127.0.0.1:8000/api/items/", {
-            type: "info",
-            data: {
-                user_id,
-                password,
-            }
+        const response = await fetch("http://127.0.0.1:8000/api/items/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",  // Content-Type 설정
+            },
+            body: JSON.stringify({
+                data_type: "check_login",
+                data: {
+                    id,
+                    password,
+                }
+            })
         });
 
-        if ( response.data.success ) {
+        const data = await response.json();  // 서버 응답을 JSON으로 파싱
+
+        if (data.success) {
             console.log("로그인 성공!");
             return true;
         } else {

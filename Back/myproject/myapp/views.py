@@ -23,9 +23,9 @@ class BaseModelHandler(APIView):
             return None, serializer.errors
 
         elif data_type == 'check_login':  # 👈 여기에 검증 추가
-            user_id = data.get('user_id')
+            id = data.get('id')
             password = data.get('password')
-            if user_id == 'admin' and password == '1234':
+            if id == 'admin' and password == '1234':
                 return {'message': 'Login successful'}, None
             else:
                 return None, {'message': 'Invalid credentials'}

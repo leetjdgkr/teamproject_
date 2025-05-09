@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { validation } from './js/validation';
 import { useNavigate } from 'react-router-dom';
 import { HandleLogin } from './js/logindata';
+import { FetchUserData } from './js/getLogindata';
 
 const Login = () => {
     const navigate = useNavigate();
@@ -16,12 +17,13 @@ const Login = () => {
         passwordError: "",
         otpError: ""
     });
+    const [login_check_message,setlogin_check_message] = useState("");
 
     const rgxCnd = {
-        adminId: /^[A-Za-z0-9]{6,16}$/,  
-        adminPassword: /^[A-Za-z0-9]{6,14}$/,  
+        adminId: /^[A-Za-z0-9]{4,16}$/,  
+        adminPassword: /^[A-Za-z0-9]{4,14}$/,  
         adminOtp: /^\d{6}$/,
-        staffId: /^[A-Za-z0-9]{6,16}$/,
+        staffId: /^[A-Za-z0-9]{4,16}$/,
         staffPw: /^[A-Za-z0-9]{4,14}$/
     };
 
@@ -54,22 +56,22 @@ const Login = () => {
             setId,
             password,
             setPassword,
-            otp,
-            setOtp,
-            role,
-            rgxCnd,
             setErrors
         });
 
         if (isValid)  {
             const loginsuccess = await HandleLogin(id,password);
             if(loginsuccess){
-                navigate('/data');
+                const login_check_suceess = await FetchUserData();
+                if(login_check_suceess.success){
+                    setlogin_check_message(login_check_suceess.message);
+                    // navigate('/data');
+                }else{
+                    setlogin_check_message(login_check_suceess.message);
+                }
             }else{
-                console.log('실패');
+                setlogin_check_message("입력값이 조건에 맞지않음");
             }
-        } else {
-            console.log("로그인 실패!");
         }
         setId("");  
         setPassword("");
@@ -195,6 +197,9 @@ const Login = () => {
               className = "answerBtn"   
               onClick   = {handlecheck}
             >로그인</button>
+            <div className="check_message"  style={{ display: login_check_message ? 'flex' : 'none' }}>
+                {login_check_message && <span className="tooltip">{login_check_message}</span>}
+            </div>
         </div>
     );
 };

@@ -115,3 +115,11 @@
     height:10%;
     border-radius:10px;
 }
+.loginBK > .check_message{
+    width:50%;
+    height:50%;
+    border-radius:10px;
+    background-color: #8cc3ff;
+    position:absolute;    
+    display:none;
+}
