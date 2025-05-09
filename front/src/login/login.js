@@ -56,6 +56,10 @@ const Login = () => {
             setId,
             password,
             setPassword,
+            otp,
+            setOtp,
+            role,
+            rgxCnd,
             setErrors
         });
 
