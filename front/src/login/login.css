@@ -20,6 +20,11 @@
     -webkit-backdrop-filter: blur( 2.5px );
     border-radius: 10px;
     border: 1px solid rgba( 255, 255, 255, 0.18 );
+    transition: opacity 0.1s ease;
+    opacity: 1;
+}
+.loginBK.fade-out {
+  opacity: 0;
 }
 .loginBK > .userchoice{
     width: 70%;
@@ -117,9 +122,10 @@
 }
 .loginBK > .check_message{
     width:50%;
-    height:50%;
+    height:10%;
     border-radius:10px;
-    background-color: #8cc3ff;
-    position:absolute;    
     display:none;
+}
+.loginBK > .check_message .tooltip{
+    color:red;
 }

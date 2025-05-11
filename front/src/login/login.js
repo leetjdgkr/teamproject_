@@ -18,6 +18,7 @@ const Login = () => {
         otpError: ""
     });
     const [login_check_message,setlogin_check_message] = useState("");
+    const [fadeOut , setFadeOut] = useState(false);
 
     const rgxCnd = {
         adminId: /^[A-Za-z0-9]{4,16}$/,  
@@ -65,16 +66,14 @@ const Login = () => {
 
         if (isValid)  {
             const loginsuccess = await HandleLogin(id,password);
-            if(loginsuccess){
-                setlogin_check_message(loginsuccess.message);
+            if(loginsuccess.success){
+                setFadeOut(true);
                 setTimeout(() => {
                     navigate('/data');
-                }, 2000);
+                }, 500);
             }else{
-                setlogin_check_message(loginsuccess.message);
+                setlogin_check_message("아이디 및 비밀번호가 틀렸습니다.");
             }
-        }else{
-            setlogin_check_message("로그인 실패")
         }
         setId("");  
         setPassword("");
@@ -82,7 +81,7 @@ const Login = () => {
     };
 
     return (
-        <div className="loginBK">
+        <div  className={`loginBK ${fadeOut ? 'fade-out' : ''}`}>
             {/* 관리자 / 사원 선택 버튼 */}
             <div className="userchoice">
                 <div className="userchoice_sub">
@@ -132,8 +131,6 @@ const Login = () => {
                         value       = {id}
                         onChange    = {handleChange}
                     />
-                    {/* 로그인 버튼 클릭 시 오류 메시지 표시 */}
-                    {errors.idError && <span className="tooltip">{errors.idError}</span>}
                 </div>
                 <div className = "admin_subbox">
                     <input
@@ -144,8 +141,6 @@ const Login = () => {
                         value       = {password}
                         onChange    = {handleChange}
                     />
-                    {/* 로그인 버튼 클릭 시 오류 메시지 표시 */}
-                    {errors.pwError && <span className="tooltip">{errors.pwError}</span>}
                 </div>
                 <div className = "admin_subbox">
                     <input
@@ -156,8 +151,9 @@ const Login = () => {
                         value       = {otp}
                         onChange    = {handleChange}
                     />
-                    {/* 로그인 버튼 클릭 시 오류 메시지 표시 */}
-                    {errors.otpError && <span className="tooltip">{errors.otpError}</span>}
+                </div>
+                <div className="check_message"  style={{ display: login_check_message ? 'flex' : 'none' }}>
+                    {login_check_message && <span className="tooltip" style={{color:'red'}}>{login_check_message}</span>}
                 </div>
             </motion.div>
 
@@ -179,8 +175,6 @@ const Login = () => {
                         value       = {id}
                         onChange    = {handleChange}
                     />
-                    {/* 로그인 버튼 클릭 시 오류 메시지 표시 */}
-                    {errors.idError && <span className="tooltip">{errors.idError}</span>}
                 </div>
                 <div className="staff_subbox">
                     <input
@@ -191,18 +185,12 @@ const Login = () => {
                         value       = {password}
                         onChange    = {handleChange}
                     />
-                    {/* 로그인 버튼 클릭 시 오류 메시지 표시 */}
-                    {errors.pwError && <span className="tooltip">{errors.pwError}</span>}
+                </div>
+                <div className="check_message"  style={{ display: login_check_message ? 'flex' : 'none' }}>
+                    {login_check_message && <span className="tooltip" style={{color:'red'}}>{login_check_message}</span>}
                 </div>
             </motion.div>
-
-            <button 
-              className = "answerBtn"   
-              onClick   = {handlecheck}
-            >로그인</button>
-            <div className="check_message"  style={{ display: login_check_message ? 'flex' : 'none' }}>
-                {login_check_message && <span className="tooltip">{login_check_message}</span>}
-            </div>
+            <button className = "answerBtn" onClick   = {handlecheck}>로그인</button>
         </div>
     );
 };
