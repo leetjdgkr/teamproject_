@@ -66,16 +66,15 @@ const Login = () => {
         if (isValid)  {
             const loginsuccess = await HandleLogin(id,password);
             if(loginsuccess){
-                const login_check_suceess = await FetchUserData(id);
-                if(login_check_suceess.success){
-                    setlogin_check_message(login_check_suceess.message);
-                    // navigate('/data');
-                }else{
-                    setlogin_check_message(login_check_suceess.message);
-                }
+                setlogin_check_message(loginsuccess.message);
+                setTimeout(() => {
+                    navigate('/data');
+                }, 2000);
             }else{
-                setlogin_check_message("입력값이 조건에 맞지않음");
+                setlogin_check_message(loginsuccess.message);
             }
+        }else{
+            setlogin_check_message("로그인 실패")
         }
         setId("");  
         setPassword("");
