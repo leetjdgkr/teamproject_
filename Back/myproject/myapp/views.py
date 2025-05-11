@@ -1,10 +1,9 @@
-# views.py
-
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from .models import Item, Info
 from .serializers import ItemSerializer, InfoSerializer
+from .auth_utils import check_credentials
 
 class BaseModelHandler(APIView):
     def handle_data(self, data_type, data):
@@ -21,11 +20,11 @@ class BaseModelHandler(APIView):
                 instance = serializer.save()
                 return serializer, instance
             return None, serializer.errors
-
-        elif data_type == 'check_login':  # 👈 여기에 검증 추가
-            id = data.get('id')
+        elif data_type == 'check_login':
+            user_id = data.get('id')
             password = data.get('password')
-            if id == 'admin' and password == '1234':
+        
+            if check_credentials(user_id, password):
                 return {'message': 'Login successful'}, None
             else:
                 return None, {'message': 'Invalid credentials'}
