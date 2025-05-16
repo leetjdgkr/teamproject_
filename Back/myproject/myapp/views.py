@@ -21,11 +21,11 @@ class BaseModelHandler(APIView):
                 return serializer, instance
             return None, serializer.errors
         elif data_type == 'check_login':
-            user_id = data.get('id')
-            password = data.get('password')
+            user_id   = data.get('user_id')
+            password  = data.get('password')
         
             if check_credentials(user_id, password):
-                return {'message': 'Login successful'}, None
+                return {'message': 'Login successful'}
             else:
                 return None, {'message': 'Invalid credentials'}
 
