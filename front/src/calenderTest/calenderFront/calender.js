@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useState, useContext } from 'react';
 import { subMonths, addMonths } from "date-fns";
 import Option from "./index";
 import '../css/calender.css';
-import UserContext from "../../login/js/getLogindata";
+import UserContext from "../../login/js/userContext";
 
 const groupDatesByWeek = (startDay, endDay) => {
   const weeks = [];
@@ -45,6 +45,7 @@ const Calendar = () => {
   const [date, setDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(null);
   const [showOption, setShowOption] = useState(false);
+ const { user } = useContext(UserContext)
 
   const year = date.getFullYear();
   const month = date.getMonth();
