@@ -2,6 +2,7 @@ import { useState } from "react";
 import { subMonths, addMonths } from "date-fns";
 import Option from "./index";
 import '../css/calender.css';
+import UserContext from "../../login/js/getLogindata";
 
 const groupDatesByWeek = (startDay, endDay) => {
   const weeks = [];
@@ -65,6 +66,9 @@ const Calendar = () => {
     return (
         <div className="calenderbk">
           <div className="calender_sub ">
+          <div>
+            <h2>{ user.name }님</h2>
+          </div>
             <div className="calender-check">
               <button onClick={() => setDate(subMonths(date, 1))}>이전 달</button>
               <span>{year}년 {month + 1}월</span>

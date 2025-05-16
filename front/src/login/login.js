@@ -5,6 +5,7 @@ import { validation } from './js/validation';
 import { useNavigate } from 'react-router-dom';
 import { HandleLogin } from './js/logindata';
 import { FetchUserData } from './js/getLogindata';
+import UserContext from "../login/js/getLogindata";
 
 const Login = () => {
     const navigate = useNavigate();
@@ -68,6 +69,7 @@ const Login = () => {
             const loginsuccess = await HandleLogin(id,password);
             if(loginsuccess.success){
                 setFadeOut(true);
+                serUser(loginsuccess.name);
                 setTimeout(() => {
                     navigate('/data');
                 }, 500);
