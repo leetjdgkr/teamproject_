@@ -1,8 +1,8 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .models import Item, Info
-from .serializers import ItemSerializer, InfoSerializer
+from .models import Item, User_Login
+from .serializers import ItemSerializer, User_LoginSerializer
 from .auth_utils import check_credentials
 
 class BaseModelHandler(APIView):
@@ -14,8 +14,8 @@ class BaseModelHandler(APIView):
                 return serializer, instance
             return None, serializer.errors
 
-        elif data_type == 'info':
-            serializer = InfoSerializer(data=data)
+        elif data_type == 'user_login':
+            serializer = User_LoginSerializer(data=data)
             if serializer.is_valid():
                 instance = serializer.save()
                 return serializer, instance
