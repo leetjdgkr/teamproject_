@@ -45,7 +45,8 @@ const Calendar = () => {
   const [date, setDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(null);
   const [showOption, setShowOption] = useState(false);
- const { user } = useContext(UserContext)
+   const { user } = useContext(UserContext)
+   console.log(user);
 
   const year = date.getFullYear();
   const month = date.getMonth();
@@ -68,7 +69,7 @@ const Calendar = () => {
         <div className="calenderbk">
           <div className="calender_sub ">
           <div>
-            <h2>{ user.name }님</h2>
+            <h2>{ user }님</h2>
           </div>
             <div className="calender-check">
               <button onClick={() => setDate(subMonths(date, 1))}>이전 달</button>

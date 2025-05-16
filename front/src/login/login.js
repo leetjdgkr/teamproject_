@@ -70,6 +70,7 @@ const Login = () => {
             const loginsuccess = await HandleLogin(id,password);
             if(loginsuccess.success){
                 setFadeOut(true);
+                console.log(loginsuccess.name);
                 setUser(loginsuccess.name);
                 setTimeout(() => {
                     navigate('/data');
