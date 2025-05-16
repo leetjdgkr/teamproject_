@@ -1,13 +1,14 @@
 import './login.css';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { motion } from 'framer-motion';
 import { validation } from './js/validation';
 import { useNavigate } from 'react-router-dom';
 import { HandleLogin } from './js/logindata';
-import { FetchUserData } from './js/getLogindata';
-import UserContext from "../login/js/getLogindata";
+import { FetchUserData } from './js/userContext';
+import UserContext from "./js/userContext";
 
 const Login = () => {
+    const { setUser } = useContext(UserContext)
     const navigate = useNavigate();
     const [id, setId] = useState("");
     const [password, setPassword] = useState("");
@@ -69,7 +70,7 @@ const Login = () => {
             const loginsuccess = await HandleLogin(id,password);
             if(loginsuccess.success){
                 setFadeOut(true);
-                serUser(loginsuccess.name);
+                setUser(loginsuccess.name);
                 setTimeout(() => {
                     navigate('/data');
                 }, 500);
