@@ -25,7 +25,7 @@ const Login = () => {
     const rgxCnd = {
         adminId: /^[A-Za-z0-9]{4,16}$/,  
         adminPassword: /^[A-Za-z0-9]{4,14}$/,  
-        adminOtp: /^\d{6}$/,
+        adminOtp: /^[A-Za-z0-9]{6}$/,
         staffId: /^[A-Za-z0-9]{4,16}$/,
         staffPw: /^[A-Za-z0-9]{4,14}$/
     };

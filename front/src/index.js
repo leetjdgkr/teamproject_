@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import Login from './login/login';
 import Calendar from './calenderTest/calenderFront/calender';
+import AdminPage from './adminpage/adminPage';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import UserContext from "./login/js/userContext";
@@ -24,6 +25,7 @@ const Root = () => {
               </RequireAuth>
             }
           />
+          <Route path = "/adminpage" element={<AdminPage/>}/>
         </Routes>
       </BrowserRouter>
     </UserContext.Provider>

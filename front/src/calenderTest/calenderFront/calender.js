@@ -45,8 +45,7 @@ const Calendar = () => {
   const [date, setDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(null);
   const [showOption, setShowOption] = useState(false);
-   const { user } = useContext(UserContext)
-   console.log(user);
+  const { user } = useContext(UserContext);
 
   const year = date.getFullYear();
   const month = date.getMonth();
@@ -61,51 +60,83 @@ const Calendar = () => {
 
   const weeks = groupDatesByWeek(startDay, endDay);
 
-  const hadleOntarget = (year,month, day) => {
-    setSelectedDate({"year":year, "month":month, "day":day});
-    setShowOption(true); 
+  // ✨ 날짜 선택 핸들러
+  const handleOnTarget = (dateObj) => {
+    const y = dateObj.getFullYear();
+    const m = dateObj.getMonth() + 1;
+    const d = dateObj.getDate();
+
+    const padded = (n) => String(n).padStart(2, '0');
+
+    setSelectedDate({
+      year: y,
+      month: m,
+      day: d,
+      formatted: `${y}-${padded(m)}-${padded(d)}`,
+    });
+
+    setShowOption(true);
   };
-    return (
-        <div className="calenderbk">
-          <div className="calender_sub ">
-          <div>
-            <h2>{ user }님</h2>
-          </div>
-            <div className="calender-check">
-              <button onClick={() => setDate(subMonths(date, 1))}>이전 달</button>
-              <span>{year}년 {month + 1}월</span>
-              <button onClick={() => setDate(addMonths(date, 1))}>다음 달</button>
-            </div>
-            <table>
-                <thead>
-                <tr>
-                    <th>일</th>
-                    <th>월</th>
-                    <th>화</th>
-                    <th>수</th>
-                    <th>목</th>
-                    <th>금</th>
-                    <th>토</th>
-                </tr>
-                    </thead>
-                <tbody>
-                {weeks.map((week, i) => (
-                    <tr key={i}>
-                    {week.map((day, j) => (
-                        <td key={j} onClick={() => hadleOntarget(year, day.getMonth() + 1, day.getDate())}
-                            style={{
-                              color: day.getMonth() !== month  ? "lightgray" 
-                              : (day.getDay() === 0 ? "red" : (day.getDay() === 6 ? "blue" : "black"))
-                          }}
-                        >
-                        {day.getDate()}
-                        </td>
-                    ))}
-                    </tr>
+
+  const isSelected = (day) =>
+    selectedDate &&
+    selectedDate.day === day.getDate() &&
+    selectedDate.month === day.getMonth() + 1 &&
+    selectedDate.year === day.getFullYear();
+
+  return (
+    <div className="calenderbk">
+      <div className="calender_sub">
+        <div>
+          <h2>{user}님</h2>
+        </div>
+        <div className="calender-check">
+          <button onClick={() => setDate(subMonths(date, 1))}>이전 달</button>
+          <span>{year}년 {month + 1}월</span>
+          <button onClick={() => setDate(addMonths(date, 1))}>다음 달</button>
+        </div>
+
+        <table>
+          <thead>
+            <tr>
+              <th>일</th>
+              <th>월</th>
+              <th>화</th>
+              <th>수</th>
+              <th>목</th>
+              <th>금</th>
+              <th>토</th>
+            </tr>
+          </thead>
+          <tbody>
+            {weeks.map((week, i) => (
+              <tr key={i}>
+                {week.map((day, j) => (
+                  <td
+                    key={j}
+                    onClick={() => handleOnTarget(day)}
+                    style={{
+                      backgroundColor: isSelected(day) ? "lightblue" : "transparent",
+                      color:
+                        day.getMonth() !== month
+                          ? "lightgray"
+                          : day.getDay() === 0
+                          ? "red"
+                          : day.getDay() === 6
+                          ? "blue"
+                          : "black",
+                    }}
+                  >
+                    {day.getDate()}
+                  </td>
                 ))}
-                </tbody>
+              </tr>
+            ))}
+          </tbody>
         </table>
       </div>
+
+      {/* ✨ 선택 시 옵션 표시 */}
       {showOption && <Option selectedDate={selectedDate} />}
     </div>
   );
