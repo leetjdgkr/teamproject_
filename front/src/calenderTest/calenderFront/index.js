@@ -37,13 +37,19 @@ const Option = ({ selectedDate }) => {
       ? selectedDate.toLocaleDateString()
       : `${selectedDate.formatted}`;
 
+    const getTimeString = (floatHours) => {
+      const hours = Math.floor(floatHours);
+      const minutes = Math.round((floatHours - hours) * 60);
+      return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:00`;
+    };
+
     const newRecord = {
       data_type:"work_info",
         data :{ 
           user_name : user ,
           work_start : formattedDate + " " + startTime + ":00",
           work_end : formattedDate + " " + finishTime  + ":00",
-          total_time : totalWorkTime + ":00:00",
+          total_time : getTimeString(totalWorkTime),
           work_date : formattedDate,
           work_place : location, 
         }
