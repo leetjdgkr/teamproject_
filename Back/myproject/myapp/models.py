@@ -37,6 +37,6 @@ class Work_Info(models.Model):
     user_name  = models.CharField(max_length=50)     # 사용자 이름
     work_start = models.DateTimeField()              # 작업 시작 시간 (날짜 + 시간)
     work_end   = models.DateTimeField()              # 작업 종료 시간 (날짜 + 시간)
-    total_time = models.CharField()                  # 일한 총 시간 (시간 간격)
+    total_time = models.CharField(max_length=20)     # 일한 총 시간 (시간 간격)
     work_date  = models.DateField()                  # 근무 날짜
     work_place = models.CharField(max_length=100)    # 근무 장소
