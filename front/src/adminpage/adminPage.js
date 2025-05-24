@@ -30,7 +30,7 @@ const AdminPage = () => {
   };
 
   return (
-    <div>
+    <div className="aminPage_Bk">
       <table>
         <thead>
           <tr>

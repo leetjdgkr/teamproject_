@@ -23,15 +23,19 @@
     align-items:center;
     z-index: 1001;
 }
+.modal-contents > h2{
+    margin:0px;
+}
 .activeModal{
     width:100%;
     display:flex;
     flex-direction: column;
 }
-.activeModal > span,input{
-    width:100px;
+.activeModal > .location-wage-item > span,input{
+    width:150px;
+    font-size:14px;
 }
-.activeModal > div{
+.activeModal > .location-wage-item{
     width:100%;
     display:flex;
     justify-content:space-evenly;

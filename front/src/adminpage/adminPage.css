@@ -1,13 +1,19 @@
-table {
+.aminPage_Bk > table {
     margin: 100px;
     border: 1px solid black;
     border-collapse: collapse;
 }
-th,
+.aminPage_Bk > table >th,
 td {
     width: 200px;
     height: 100px;
     text-align: center;
+    border: 1px solid black;
+}
+.aminPage_Bk > table > thead > tr > th{
+    width:200px;
+    height:100px;
+    text-align:center;
     border: 1px solid black;
 }
 

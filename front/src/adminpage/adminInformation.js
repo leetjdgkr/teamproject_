@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import AdminPanel from "./js/admnsButon";
+import locationsList from "../calenderTest/js/locationsList";
 import './adminInformation.css'
 
 const AdminInformation = ({ person, onClose, onSave }) => {
@@ -31,7 +32,7 @@ const AdminInformation = ({ person, onClose, onSave }) => {
         return (
             <div className="modal-backdrop">
                 <div className="modal-content">
-                    <AdminPanel onClose={handleBackFromPanel} />
+                    <AdminPanel onClose={handleBackFromPanel} locations = {locationsList} />
                 </div>
             </div>
         );
@@ -56,7 +57,7 @@ const AdminInformation = ({ person, onClose, onSave }) => {
                     </div>
                     <button type="submit">저장</button>
                     <button type="button" className="closeBtn" onClick={onClose}>X</button>
-                    <button onClick={handleShowPanel}>일급</button>
+                    <button onClick={handleShowPanel} >일급</button>
                 </form>
             </div>
         </div>
