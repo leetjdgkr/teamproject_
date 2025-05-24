@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./admnsButon.css"
+import { Panel_PostData } from "./admnsdbPost";
 
 const AdminPanel = ({ onClose, locations }) => {
   // 일급 입력 상태 관리 (장소별로)
@@ -19,14 +20,20 @@ const AdminPanel = ({ onClose, locations }) => {
     }));
   };
 
-  const handleSave = () => {
-    console.log("저장된 일급 데이터:", wages);
-    // 여기서 API 호출하거나 부모 컴포넌트로 전달 가능
+  const handleSave = async(e) => {
+    e.preventDefault();
+    try {
+      const result = await Panel_PostData(wages);
+      console.log("저장 성공", result);
+      onClose();
+    } catch (err) {
+      alert("저장 중 오류 발생");
+    }
     onClose();
   };
 
   return (
-    <div className="adminpanelBk">
+    <form className="adminpanelBk">
       <div className="modal-contents">
         <h2>일급 수정창</h2>
         <div className="activeModal">
@@ -47,7 +54,7 @@ const AdminPanel = ({ onClose, locations }) => {
           <button onClick={onClose}>닫기</button>
         </div>
       </div>
-    </div>
+    </form>
   );
 };
 
