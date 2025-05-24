@@ -1,28 +1,43 @@
-import React from "react";
+import React, { useState } from "react";
 import "../adminpage/adminPage.css";
+import AdminInformation from "./adminInformation";
 
 const AdminPage = () => {
-    const people = {
-        header:["이름","생년월일","전화번호"],
-        data: [
-            { people: "김재선", birthday: "2000.10.02", phoneNumber: "010-4134-9069" },
-            { people: "남진우", birthday: "2000.08.29", phoneNumber: "010-3954-7589" },
-        ]
+    const [peopleData, setPeopleData] = useState([
+        { people: "김재선", birthday: "2000.10.02", phoneNumber: "010-4134-9069" },
+        { people: "남진우", birthday: "2000.08.29", phoneNumber: "010-3954-7589" },
+    ]);
+    const [selectedPerson, setSelectedPerson] = useState(null);
+
+    const handleRowClick = (person) => {
+        setSelectedPerson(person);
     };
-    
+
+    const handleCloseModal = () => {
+        setSelectedPerson(null);
+    };
+
+    const handleSave = (updatedPerson) => {
+        setPeopleData((prev) =>
+            prev.map((item) =>
+                item.people === updatedPerson.people ? updatedPerson : item
+            )
+        );
+    };
+
     return (
         <div>
             <table>
                 <thead>
-                    {people.header.map ((item) =>{
-                        return(
-                            <th>{item}</th>
-                        )
-                    })}
+                    <tr>
+                        <th>이름</th>
+                        <th>생년월일</th>
+                        <th>전화번호</th>
+                    </tr>
                 </thead>
                 <tbody>
-                    {people.data.map((item, index) => (
-                        <tr key={index}>
+                    {peopleData.map((item, index) => (
+                        <tr key={index} onClick={() => handleRowClick(item)} style={{ cursor: 'pointer' }}>
                             <td>{item.people}</td>
                             <td>{item.birthday}</td>
                             <td>{item.phoneNumber}</td>
@@ -30,6 +45,15 @@ const AdminPage = () => {
                     ))}
                 </tbody>
             </table>
+
+            {/* 모달 조건부 렌더링 */}
+            {selectedPerson && (
+                <AdminInformation
+                    person={selectedPerson}
+                    onClose={handleCloseModal}
+                    onSave={handleSave}
+                />
+            )}
         </div>
     );
 };
