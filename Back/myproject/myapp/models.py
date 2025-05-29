@@ -40,3 +40,9 @@ class Work_Info(models.Model):
     total_time = models.CharField()                  # 일한 총 시간 (시간 간격)
     work_date  = models.DateField()                  # 근무 날짜
     work_place = models.CharField(max_length=100)    # 근무 장소
+
+
+class work_pay(models.Model):
+    Employee_Number = models.CharField(max_length=50)   #사원번호
+    Company         = models.CharField(max_length=50)   #회사명
+    Daily_Wages     = models.IntegerField()             #일급
