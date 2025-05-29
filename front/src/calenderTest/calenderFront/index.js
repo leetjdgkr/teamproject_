@@ -1,5 +1,6 @@
 import { useContext, useState , useEffect } from "react";
 import UserContext from "../../login/js/userContext";
+import locationsList from "../js/locationsList";
 import '../css/activity.css'
 
 const Option = ({ selectedDate }) => {
@@ -10,10 +11,6 @@ const Option = ({ selectedDate }) => {
   const [workTime, setWorkTime] = useState("");        
   const [startTime, setStartTime] = useState("");      
   const [finishTime, setFinishTime] = useState("");     
-  const [locationsList] = useState([
-    "삼성전자(평택)", "삼성전자(기흥)", "삼성전자(아산)", "삼성전자(서울)",
-    "LG전자(대전)", "LG전자(구미)", "SK하이닉스(이천)", "삼성디스플레이(온양)"
-  ]);
   const [showLocations, setShowLocations] = useState(false);
   const { user } = useContext(UserContext);
 
