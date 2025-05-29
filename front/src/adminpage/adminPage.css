@@ -1,0 +1,40 @@
+.aminPage_Bk > table {
+    margin: 100px;
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+.aminPage_Bk > table >th,
+td {
+    width: 200px;
+    height: 100px;
+    text-align: center;
+    border: 1px solid black;
+}
+.aminPage_Bk > table > thead > tr > th{
+    width:200px;
+    height:100px;
+    text-align:center;
+    border: 1px solid black;
+}
+
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+.modal-content {
+    position: relative;
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 400px;
+    height:400px;
+}
