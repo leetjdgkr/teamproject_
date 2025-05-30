@@ -9,10 +9,11 @@ class Item(models.Model):
         return self.name  # Item의 이름을 반환
 
 
-class User_Login(models.Model):
-    user_name = models.CharField(max_length=50, default='홍길동')   # 유저 이름
-    user_id   = models.CharField(max_length=50)
-    password  = models.CharField(max_length=100)
+class User_Login_Info(models.Model):
+    employee_number = models.CharField(max_length=50, primary_key=True)
+    user_name       = models.CharField(max_length=50, default='홍길동')   # 유저 이름
+    user_id         = models.CharField(max_length=50)
+    password        = models.CharField(max_length=100)
     
     def save(self, *args, **kwargs):
         # 비밀번호가 해시되지 않은 상태일 때만 해시
@@ -21,7 +22,7 @@ class User_Login(models.Model):
         super().save(*args, **kwargs)
 
 
-class Admin_Login(models.Model):
+class Admin_Login_Info(models.Model):
     admin_name = models.CharField(max_length=50)       # 관리자 이름
     admin_id   = models.CharField(max_length=50)       # 관리자 ID
     password   = models.CharField(max_length=100)      # 관리자 비밀번호
@@ -34,9 +35,16 @@ class Admin_Login(models.Model):
         super().save(*args, **kwargs)
 
 class Work_Info(models.Model):
-    user_name  = models.CharField(max_length=50)     # 사용자 이름
-    work_start = models.DateTimeField()              # 작업 시작 시간 (날짜 + 시간)
-    work_end   = models.DateTimeField()              # 작업 종료 시간 (날짜 + 시간)
-    total_time = models.CharField(max_length=20)     # 일한 총 시간 (시간 간격)
-    work_date  = models.DateField()                  # 근무 날짜
-    work_place = models.CharField(max_length=100)    # 근무 장소
+    employee_number = models.ForeignKey(User_Login_Info, on_delete=models.CASCADE) # FK 선언
+    user_name       = models.CharField(max_length=50)                              # 사용자 이름
+    work_start      = models.DateTimeField()                                       # 작업 시작 시간 (날짜 + 시간)
+    work_end        = models.DateTimeField()                                       # 작업 종료 시간 (날짜 + 시간)
+    total_time      = models.CharField(max_length=20)                              # 일한 총 시간 (시간 간격)
+    work_date       = models.DateField()                                           # 근무 날짜
+    work_place      = models.CharField(max_length=100)                             # 근무 장소
+
+
+class Work_Pay(models.Model):
+    employee_number = models.ForeignKey(User_Login_Info, on_delete=models.CASCADE)  # FK 선언
+    company         = models.CharField(max_length=50)                               # 회사명
+    daily_wages     = models.IntegerField()                                         # 일급
