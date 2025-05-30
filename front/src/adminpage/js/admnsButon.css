@@ -50,3 +50,16 @@
     display: flex;
     justify-content: space-evenly;
 }
+.activeModal > .location-wage-item > .location-delete{
+    width:20px;
+    height:20px;
+    text-align: center;
+    line-height: 16px;
+    font-weight: bold;
+    border:1px solid #333;
+}
+.modal-contents > .add-btn{
+    position: absolute;
+    right: 5%;
+    top: 5%;
+}

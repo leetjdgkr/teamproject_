@@ -45,11 +45,11 @@ const AdminInformation = ({ person, onClose, onSave }) => {
                 <form onSubmit={handleSubmit}>
                     <div>
                         <label>이름: </label>
-                        <input name="people" value={formData.people} onChange={handleChange} />
+                        <span>{formData.people}</span>
                     </div>
                     <div>
                         <label>생년월일: </label>
-                        <input name="birthday" value={formData.birthday} onChange={handleChange} />
+                        <span>{formData.birthday}</span>
                     </div>
                     <div>
                         <label>전화번호: </label>

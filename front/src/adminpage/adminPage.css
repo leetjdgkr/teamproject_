@@ -1,16 +1,19 @@
-.aminPage_Bk > table {
-    margin: 100px;
+.adminPage_Bk{
+    padding:50px;
+    position: relative;
+}
+.adminPage_Bk > table {
     border: 1px solid black;
     border-collapse: collapse;
 }
-.aminPage_Bk > table >th,
+.adminPage_Bk > table >th,
 td {
     width: 200px;
     height: 100px;
     text-align: center;
     border: 1px solid black;
 }
-.aminPage_Bk > table > thead > tr > th{
+.adminPage_Bk > table > thead > tr > th{
     width:200px;
     height:100px;
     text-align:center;
@@ -37,4 +40,10 @@ td {
     border-radius: 8px;
     width: 400px;
     height:400px;
+}
+.add-button-wrapper {
+  position: absolute;
+  top: 20px;
+  right: 50px;
+  z-index: 1000;
 }
