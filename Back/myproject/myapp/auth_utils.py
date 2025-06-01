@@ -5,7 +5,7 @@ def check_credentials(user_id, password):
     try:
         user = User_Login_Info.objects.get(user_id=user_id)
         if check_password(password, user.password):  # 평문 vs 해시 비교
-            return True, user.user_name
+            return True, user.user_name, user.employee_number
     except User_Login_Info.DoesNotExist:
         pass
-    return False, None
+    return False, None, None

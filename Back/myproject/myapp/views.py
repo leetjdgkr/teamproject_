@@ -31,10 +31,10 @@ class BaseModelHandler(APIView):
              user_id  = data.get('id')
              password = data.get('password')
      
-             success, user_name = check_credentials(user_id, password)
+             success, user_name, employee_number = check_credentials(user_id, password)
      
              if success:
-                 return {'success': True, 'message': 'Login successful', 'user_name': user_name}, None
+                 return {'success': True, 'message': 'Login successful', 'user_name': user_name, 'employee_number' : employee_number}, None
              else:
                  return None, {'success': False, 'message': 'Invalid credentials'}
 
