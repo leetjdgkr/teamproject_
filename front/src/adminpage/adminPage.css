@@ -47,3 +47,8 @@ td {
   right: 50px;
   z-index: 1000;
 }
+.custom-checkbox {
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+}

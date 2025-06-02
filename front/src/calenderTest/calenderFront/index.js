@@ -12,10 +12,10 @@ const Option = ({ selectedDate }) => {
   const [startTime, setStartTime] = useState("");      
   const [finishTime, setFinishTime] = useState("");     
   const [showLocations, setShowLocations] = useState(false);
-  const { user } = useContext(UserContext);
+  const { user , employeeNumber} = useContext(UserContext);
 
   // 실시간으로 검색된 리스트를 필터링하는 함수
-
+  
   const handleSelectLocation = (selectedLocation) => {
     setLocation(selectedLocation);
     setShowLocations(false); // 선택 후 리스트를 닫음
@@ -42,6 +42,7 @@ const Option = ({ selectedDate }) => {
       return `${String(hours).padStart(2,'0')}:${String(minutes).padStart(2,'0')}:${String(seconds).padStart(2,'0')}`;
     }
     const totalTimeString = convertHoursToHMS(totalWorkTime);
+    const employeeNum =  Number(employeeNumber);
     const newRecord = {
       data_type:"work_info",
         data :{ 
@@ -51,6 +52,7 @@ const Option = ({ selectedDate }) => {
           total_time : totalTimeString,
           work_date : formattedDate,
           work_place : location, 
+          employee_number : employeeNum,
         }
     };
 

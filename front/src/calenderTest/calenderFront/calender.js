@@ -45,7 +45,7 @@ const Calendar = () => {
   const [date, setDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(null);
   const [showOption, setShowOption] = useState(false);
-  const { user } = useContext(UserContext);
+  const { user , employeeNumber} = useContext(UserContext);
 
   const year = date.getFullYear();
   const month = date.getMonth();
@@ -77,7 +77,7 @@ const Calendar = () => {
 
     setShowOption(true);
   };
-
+  console.log(employeeNumber,"1111")
   const isSelected = (day) =>
     selectedDate &&
     selectedDate.day === day.getDate() &&

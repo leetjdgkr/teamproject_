@@ -14,9 +14,11 @@ export const HandleLogin = async (id, password) => {
             })
         });
         const data = await response.json();
+        console.log("로그인 응답 데이터:", data);
 
         if(data.message === "check_login 처리 완료!"){
-            return { success : true , message : data.message , name : data.data.user_name  };
+            
+            return { success : true , message : data.message , employee_number: data.data.employee_number,  name : data.data.user_name  };
         }else{
             return { success : false , message :data.message };
         }

@@ -44,6 +44,10 @@ const AdminInformation = ({ person, onClose, onSave }) => {
                 <h2>정보 수정</h2>
                 <form onSubmit={handleSubmit}>
                     <div>
+                        <label>사원 번호: </label>
+                        <span>{formData.company}</span>
+                    </div>
+                    <div>
                         <label>이름: </label>
                         <span>{formData.people}</span>
                     </div>

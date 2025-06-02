@@ -8,7 +8,7 @@ import { FetchUserData } from './js/userContext';
 import UserContext from "./js/userContext";
 
 const Login = () => {
-    const { setUser } = useContext(UserContext)
+    const { setUser, setEmployeeNumber } = useContext(UserContext);
     const navigate = useNavigate();
     const [id, setId] = useState("");
     const [password, setPassword] = useState("");
@@ -69,9 +69,9 @@ const Login = () => {
         if (isValid)  {
             const loginsuccess = await HandleLogin(id,password);
             if(loginsuccess.success){
-                setFadeOut(true);
-                console.log(loginsuccess.name);
+                setFadeOut(true);   
                 setUser(loginsuccess.name);
+                setEmployeeNumber(loginsuccess.employee_number);
                 setTimeout(() => {
                     navigate('/data');
                 }, 500);
@@ -85,7 +85,7 @@ const Login = () => {
     };
 
     return (
-        <div  className={`loginBK ${fadeOut ? 'fade-out' : ''}`}>
+        <form  className={`loginBK ${fadeOut ? 'fade-out' : ''}`} onSubmit={handlecheck}>
             {/* 관리자 / 사원 선택 버튼 */}
             <div className="userchoice">
                 <div className="userchoice_sub">
@@ -194,8 +194,8 @@ const Login = () => {
                     {login_check_message && <span className="tooltip" style={{color:'red'}}>{login_check_message}</span>}
                 </div>
             </motion.div>
-            <button className = "answerBtn" onClick   = {handlecheck}>로그인</button>
-        </div>
+            <button className = "answerBtn" type="submit" onClick   = {handlecheck}>로그인</button>
+        </form>
     );
 };
 

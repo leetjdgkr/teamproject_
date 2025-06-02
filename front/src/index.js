@@ -12,9 +12,10 @@ import RequireAuth from "./requireauth"; // 분리한 인증 컴포넌트 import
 
 const Root = () => {
   const [user, setUser] = useState(null);
+  const [employeeNumber, setEmployeeNumber] = useState(null);
 
   return (
-    <UserContext.Provider value={{ user, setUser }}>
+    <UserContext.Provider value={{ user, setUser, employeeNumber, setEmployeeNumber }}>
       <BrowserRouter basename="/">
         <Routes>
           <Route path="/" element={<Login />} />
@@ -27,7 +28,7 @@ const Root = () => {
             }
           />
           <Route path="/adminpage" element={<AdminPage />} />
-          <Route path="/admin-info" element={<AdminInformation />} /> {/* ✅ 새 라우트 */}
+          <Route path="/admin-info" element={<AdminInformation />} />
         </Routes>
       </BrowserRouter>
     </UserContext.Provider>
