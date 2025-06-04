@@ -2,7 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from .serializers import ItemSerializer, User_Login_InfoSerializer, Work_InfoSerializer
-from .auth_utils import check_credentials
+from .auth_utils import check_user_credentials, check_admin_credentials
 
 class BaseModelHandler(APIView):
     def handle_data(self, data_type, data):
@@ -27,18 +27,32 @@ class BaseModelHandler(APIView):
                 return serializer, instance
             return None, serializer.errors
     
-        elif data_type == 'check_login':
+        elif data_type == 'check_login':  # 'check_user_login으로 변경해야함'
              user_id  = data.get('id')
              password = data.get('password')
      
-             success, user_name, employee_number = check_credentials(user_id, password)
+             success, user_name, employee_number = check_user_credentials(user_id, password)
      
              if success:
                  return {'success': True, 'message': 'Login successful', 'user_name': user_name, 'employee_number' : employee_number}, None
              else:
                  return None, {'success': False, 'message': 'Invalid credentials'}
+             
+        elif data_type == 'check_admin_login':
+                 admin_id   = data.get('id')
+                 password   = data.get('password')
+                 admin_code = data.get('admin_code')
+         
+                 success = check_user_credentials(admin_id, password, admin_code)
+         
+                 if success:
+                     return {'success': True, 'message': 'Login successful'}, None
+                 else:
+                     return None, {'success': False, 'message': 'Invalid credentials'}
 
         return None, {'error': 'Unknown data_type'}
+    
+        
 
 class ItemUserProfileHandler(BaseModelHandler):
     def post(self, request):
