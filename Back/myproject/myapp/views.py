@@ -27,7 +27,7 @@ class BaseModelHandler(APIView):
                 return serializer, instance
             return None, serializer.errors
     
-        elif data_type == 'check_login':  # 'check_user_login으로 변경해야함'
+        elif data_type == 'check_user_login':  # 'check_user_login으로 변경해야함'
              user_id  = data.get('id')
              password = data.get('password')
      
@@ -43,7 +43,7 @@ class BaseModelHandler(APIView):
                  password   = data.get('password')
                  admin_code = data.get('admin_code')
          
-                 success = check_user_credentials(admin_id, password, admin_code)
+                 success = check_admin_credentials(admin_id, password, admin_code)
          
                  if success:
                      return {'success': True, 'message': 'Login successful'}, None
