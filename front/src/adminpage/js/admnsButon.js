@@ -38,7 +38,7 @@ const AdminPanel = ({ onClose, locations : initlocations }) => {
   const handleSave = async(e) => {
     e.preventDefault();
     const payLoad = {
-      data_type: "payLoad",
+      data_type: "user_login_info",
       data : wages
     }
     try {
