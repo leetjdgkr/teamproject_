@@ -71,6 +71,9 @@ const Login = () => {
             if(loginsuccess.success === "admin"){
                 setFadeOut(true);   
                 setUser("admin");
+
+                sessionStorage.setItem("userRole", "admin"); //색션스토리지저장
+
                 setTimeout(() => {
                     navigate('/adminPage');
                 }, 500);
@@ -78,6 +81,12 @@ const Login = () => {
                 setFadeOut(true);   
                 setUser(loginsuccess.name);
                 setEmployeeNumber(loginsuccess.employee_number);
+
+                   // ✅ sessionStorage 저장
+                sessionStorage.setItem("userRole", "user");
+                sessionStorage.setItem("userName", loginsuccess.name);
+                sessionStorage.setItem("employeeNumber", loginsuccess.employee_number);
+
                 setTimeout(() => {
                     navigate('/data');
                 }, 500);
