@@ -13,7 +13,9 @@ class User_Login_Info(models.Model):
     employee_number = models.CharField(max_length=50, primary_key=True)
     user_name       = models.CharField(max_length=50, default='홍길동')   # 유저 이름
     user_id         = models.CharField(max_length=50)
-    password        = models.CharField(max_length=100)
+    password        = models.CharField(max_length=100, default='1234')
+    phone_number    = models.CharField(max_length=20)
+    resident_number = models.CharField(max_length=14)
     
     def save(self, *args, **kwargs):
         # 비밀번호가 해시되지 않은 상태일 때만 해시
