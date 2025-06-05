@@ -12,9 +12,9 @@ def check_user_credentials(user_id, password):
 
 def check_admin_credentials(admin_id, password, admin_code):
     try:
-        user = Admin_Login_Info.objects.get(admin_id=admin_id)
-        if check_password(password, user.password):  # 평문 vs 해시 비교
-            return True
+        admin = Admin_Login_Info.objects.get(admin_id=admin_id)
+        if check_password(password, admin.password):  # 평문 vs 해시 비교
+            return True, admin.admin_name
     except Admin_Login_Info.DoesNotExist:
         pass
-    return False
+    return False, None
