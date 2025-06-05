@@ -27,7 +27,7 @@ const Root = () => {
               </RequireAuth>
             }
           />
-          <Route path="/adminpage" element={<AdminPage />} />
+          <Route path="/adminpage" element={<RequireAuth><AdminPage /></RequireAuth>} />
           <Route path="/admin-info" element={<AdminInformation />} />
         </Routes>
       </BrowserRouter>

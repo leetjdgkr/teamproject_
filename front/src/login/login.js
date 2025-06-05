@@ -12,12 +12,12 @@ const Login = () => {
     const navigate = useNavigate();
     const [id, setId] = useState("");
     const [password, setPassword] = useState("");
-    const [otp, setOtp] = useState("");
+    const [admin_code, setadmin_code] = useState("");
     const [role, setRole] = useState("admin");
     const [errors, setErrors] = useState({
         idError: "",
         passwordError: "",
-        otpError: ""
+        admin_codeError: ""
     });
     const [login_check_message,setlogin_check_message] = useState("");
     const [fadeOut , setFadeOut] = useState(false);
@@ -44,7 +44,7 @@ const Login = () => {
               setPassword(value);
               break;
           case "adminOtp":
-              setOtp(value);
+              setadmin_code(value);
               break;
           default:
               console.log("값이 입력되지않음");
@@ -54,21 +54,27 @@ const Login = () => {
 
         e.preventDefault();
 
-        const isValid = validation({
+        const isValid = await validation({
             id,
             setId,
             password,
             setPassword,
-            otp,
-            setOtp,
+            admin_code,
+            setadmin_code,
             role,
             rgxCnd,
             setErrors
         });
-
-        if (isValid)  {
-            const loginsuccess = await HandleLogin(id,password);
-            if(loginsuccess.success){
+        console.log(isValid.success)
+        if (isValid.success)  {
+            const loginsuccess = await HandleLogin(id,password,isValid.dataType, admin_code);
+            if(loginsuccess.success === "admin"){
+                setFadeOut(true);   
+                setUser("admin");
+                setTimeout(() => {
+                    navigate('/adminPage');
+                }, 500);
+            }else if( loginsuccess.success === "user"){
                 setFadeOut(true);   
                 setUser(loginsuccess.name);
                 setEmployeeNumber(loginsuccess.employee_number);
@@ -81,7 +87,7 @@ const Login = () => {
         }
         setId("");  
         setPassword("");
-        setOtp("");
+        setadmin_code("");
     };
 
     return (
@@ -152,7 +158,7 @@ const Login = () => {
                         id          = "adminOtp"
                         className   = "otp"
                         placeholder = "인증코드"
-                        value       = {otp}
+                        value       = {admin_code}
                         onChange    = {handleChange}
                     />
                 </div>

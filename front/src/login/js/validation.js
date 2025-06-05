@@ -1,4 +1,4 @@
-export const validation = async ({ id, password, otp, role, rgxCnd, setErrors, setId, setPassword, setOtp, setRole }) => {
+export const validation = async ({ id, password, admin_code, role, rgxCnd, setErrors, setId, setPassword, setadmin_code, setRole }) => {
 
     const idRegex = role === "admin" ? rgxCnd.adminId : rgxCnd.staffId;
     const passwordRegex = role === "admin" ? rgxCnd.adminPassword : rgxCnd.staffPw;
@@ -8,12 +8,17 @@ export const validation = async ({ id, password, otp, role, rgxCnd, setErrors, s
     const newErrors = {
         idError: idRegex.test(id) ? "" : "아이디를 잘못 입력하셨습니다",
         pwError: passwordRegex.test(password) ? "" : "비밀번호를 잘못 입력하셨습니다",
-        otpError: otpRegex && otp ? otpRegex.test(otp) ? "" : "인증코드를 잘못 입력하셨습니다" : "" 
+        admin_codeError: otpRegex && admin_code ? otpRegex.test(admin_code) ? "" : "인증코드를 잘못 입력하셨습니다" : "" 
     };
 
     setErrors(newErrors);
 
-    if (newErrors.idError || newErrors.pwError || newErrors.otpError) {
+    if (newErrors.idError || newErrors.pwError || newErrors.admin_codeError) {
         return false; 
+    }
+    if(role === "admin"){
+        return { success : true , dataType : "check_admin_login" }
+    }else if( role === "staff"){
+        return { success : true , dataType : "check_user_login" }
     }
 };

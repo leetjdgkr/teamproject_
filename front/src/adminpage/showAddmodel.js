@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Panel_PostData } from "./js/admnsdbPost";
 
 const AddPersonModal = ({ onSave, onClose, existingEmployees }) => {
   const [formData, setFormData] = useState({
@@ -6,6 +7,8 @@ const AddPersonModal = ({ onSave, onClose, existingEmployees }) => {
     people: "",
     birthday: "",
     phoneNumber: "",
+    id : "",
+    pw : 1234
   });
 
   // 사원번호 자동 생성 함수
@@ -44,6 +47,9 @@ const AddPersonModal = ({ onSave, onClose, existingEmployees }) => {
       company: employeeNumber, // 키 이름 맞춤
     });
   };
+  const Panel_PostData = () => {
+
+  }
 
   return (
     <div className="modal-backdrop">
@@ -51,28 +57,55 @@ const AddPersonModal = ({ onSave, onClose, existingEmployees }) => {
         <h3>새 사람 추가</h3>
         <form onSubmit={handleSubmit}>
           <div>
-            <strong>사원번호: </strong>
+            <span>사원번호 : </span>
             <span>{formData.employeeNumber}</span>
           </div>
-          <input
-            name="people"
-            placeholder="이름"
-            value={formData.people}
-            onChange={handleChange}
-          />
-          <input
-            name="birthday"
-            type = "date"
-            placeholder="생년월일"
-            value={formData.birthday}
-            onChange={handleChange}
-          />
-          <input
-            name="phoneNumber"
-            placeholder="전화번호"
-            value={formData.phoneNumber}
-            onChange={handleChange}
-          />
+          <div>
+            <span>이름 : </span>
+            <input
+              name="people"
+              placeholder="이름"
+              value={formData.people}
+              onChange={handleChange}
+            />
+          </div>
+          <div>
+            <span>생년월일 : </span>
+            <input
+              name="birthday"
+              type = "date"
+              placeholder="생년월일"
+              value={formData.birthday}
+              onChange={handleChange}
+            />
+          </div>
+          <div>
+            <span>전화번호 : </span>
+            <input
+              name="phoneNumber"
+              placeholder="전화번호"
+              value={formData.phoneNumber}
+              onChange={handleChange}
+            />
+          </div>
+          <div>
+            <span>아이디 : </span>
+            <input
+              name="phoneNumber"
+              placeholder="아이디"
+              value={formData.id}
+              onChange={handleChange}
+            />
+          </div>
+          <div>
+            <span>패스워드 : </span>
+            <input
+              name="phoneNumber"
+              placeholder="패스워드"
+              value={formData.pw}
+              onChange={handleChange}
+            />
+          </div>
           <button type="submit">저장</button>
           <button type="button" onClick={onClose}>
             취소
