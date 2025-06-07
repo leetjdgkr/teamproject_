@@ -1,22 +1,21 @@
 import React, { useState } from "react";
-import AdminPanel from "./js/admnsButon";
 import AdminInformation from "./adminInformation";
-import AddPersonModal from "./showAddmodel";
-import AddButton from "./js/adminAddBtn";
-import "../adminpage/adminPage.css";
+import AddPersonModal from "./addPersonModal";
+import AddButton from "./adminAddBtn";
+import "../css/adminPage.css";
 
 const AdminPage = () => {
   const [selectedPerson, setSelectedPerson] = useState(null);
   const [showAddModal, setShowAddModal] = useState(false);
   const [peopleData, setPeopleData] = useState([
-    { people: "김재선", birthday: "2000.10.02", phoneNumber: "010-4134-9069", company: "SEOSAN_001" },
-    { people: "남진우", birthday: "2000.08.29", phoneNumber: "010-3954-7589", company: "SEOSAN_002" },
+    { people: "김재선", rsdnNmbr: "", phoneNumber: "010-4134-9069", company: "SEOSAN_001" },
+    { people: "남진우", rsdnNmbr: "", phoneNumber: "010-3954-7589", company: "SEOSAN_002" },
   ]);
 
   // 체크된 사원 관리 상태 (company를 key로)
   const [checkedItems, setCheckedItems] = useState({});
 
-  const peopleHeader = [" ", "사원 번호", "이름", "생년월일", "전화번호"];
+  const peopleHeader = [" ", "사원 번호", "이름", "주민등록번호", "전화번호"];
 
   const handleRowClick = (person) => {
     setSelectedPerson(person);

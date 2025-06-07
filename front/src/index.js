@@ -1,10 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import Login from './login/login';
+import Login from './login/login-Front/login';
 import Calendar from './calenderTest/calenderFront/calender';
-import AdminPage from './adminpage/adminPage';
-import AdminInformation from './adminpage/adminInformation';
+import AdminPage from './adminpage/adminpage-Front/adminPage';
+import AdminInformation from './adminpage/adminpage-Front/adminInformation';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 

@@ -1,0 +1,47 @@
+.form-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.form-row label {
+  width: 150px;
+  font-weight: bold;
+}
+
+.form-row input,
+.form-row span {
+  flex: 1;
+  padding: 6px 10px;
+}
+
+.rsdn-wrapper {
+  position: relative;
+  width: 250px; /* 필요에 따라 조절 */
+}
+
+.rsdn-input {
+  position: relative;
+  background: transparent;
+  color: transparent; /* 입력 텍스트 숨김 */
+  caret-color: black; /* 커서만 보임 */
+  width: 100%;
+  letter-spacing: 2px;
+  padding: 4px 8px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  z-index: 1;
+}
+
+.rsdn-mask {
+  position: absolute;
+  top: 4px;
+  left: 8px;
+  color: black;
+  font-size: 16px;
+  letter-spacing: 2px;
+  pointer-events: none; /* 클릭 등 이벤트 투과 */
+  user-select: none; /* 텍스트 선택 방지 */
+  white-space: nowrap;
+}

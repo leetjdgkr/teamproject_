@@ -1,11 +1,10 @@
-import './login.css';
+import '../css/login.css';
 import { useState, useContext } from 'react';
 import { motion } from 'framer-motion';
-import { validation } from './js/validation';
+import { validation } from '../js/validation';
 import { useNavigate } from 'react-router-dom';
-import { HandleLogin } from './js/logindata';
-import { FetchUserData } from './js/userContext';
-import UserContext from "./js/userContext";
+import { HandleLogin } from '../js/logindata';
+import UserContext from "../js/userContext";
 
 const Login = () => {
     const { setUser, setEmployeeNumber } = useContext(UserContext);
@@ -81,8 +80,7 @@ const Login = () => {
                 setFadeOut(true);   
                 setUser(loginsuccess.name);
                 setEmployeeNumber(loginsuccess.employee_number);
-
-                   // ✅ sessionStorage 저장
+                //session에 저장
                 sessionStorage.setItem("userRole", "user");
                 sessionStorage.setItem("userName", loginsuccess.name);
                 sessionStorage.setItem("employeeNumber", loginsuccess.employee_number);
