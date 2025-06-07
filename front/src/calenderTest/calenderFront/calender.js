@@ -1,6 +1,6 @@
 import { useState, useContext } from 'react';
 import { subMonths, addMonths } from "date-fns";
-import Option from "./index";
+import Option from "./calenderinfo";
 import '../css/calender.css';
 import UserContext from "../../login/js/userContext";
 
