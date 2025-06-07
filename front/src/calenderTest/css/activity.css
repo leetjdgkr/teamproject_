@@ -1,0 +1,36 @@
+form {
+  max-width: 400px;
+  padding: 16px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #fafafa;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  font-family: Arial, sans-serif;
+}
+
+input[type="text"], button {
+  width: 100%;
+  padding: 8px 12px;
+  margin: 6px 0;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-size: 14px;
+}
+
+input[type="text"]:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 3px #007bff;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+.flex{
+    display: flex;
+    flex-direction: column;
+}
+.flexInput {
+    width:5%;
+}
