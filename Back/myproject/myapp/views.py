@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from .serializers import ItemSerializer, User_Login_InfoSerializer, Work_InfoSerializer
 from .auth_utils import check_user_credentials, check_admin_credentials
+from .models import User_Login_Info
 
 class BaseModelHandler(APIView):
     def handle_data(self, data_type, data):
@@ -26,6 +27,15 @@ class BaseModelHandler(APIView):
                 instance = serializer.save()
                 return serializer, instance
             return None, serializer.errors
+        
+        elif data_type == 'user_info_delete':
+            employee_number = data.get('employee_number')
+            try:
+                user = User_Login_Info.objects.get(employee_number=employee_number)
+                user.delete()
+                return {'success': True, 'message': '삭제 성공'}, None
+            except User_Login_Info.DoesNotExist:
+                return None, {'error': '해당 사용자가 존재하지 않습니다.'}
     
         elif data_type == 'check_user_login':  # 'check_user_login으로 변경해야함'
              user_id  = data.get('id')
@@ -52,6 +62,7 @@ class BaseModelHandler(APIView):
 
         return None, {'error': 'Unknown data_type'}
     
+
         
 
 class ItemUserProfileHandler(BaseModelHandler):
