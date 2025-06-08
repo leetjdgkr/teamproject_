@@ -36,6 +36,18 @@ class BaseModelHandler(APIView):
                 return {'success': True, 'message': '삭제 성공'}, None
             except User_Login_Info.DoesNotExist:
                 return None, {'error': '해당 사용자가 존재하지 않습니다.'}
+            
+        elif data_type == 'user_info_update':
+            employee_number = data.get('employee_number')
+            try:
+                instance = User_Login_Info.objects.get(employee_number=employee_number)
+                serializer = User_Login_InfoSerializer(instance, data=data, partial=True)
+                if serializer.is_valid():
+                    updated_instance = serializer.save()
+                    return serializer, updated_instance
+                return None, serializer.errors
+            except User_Login_Info.DoesNotExist:
+                return None, {"error": f"User_Login_Info with id={employee_number} does not exist"}
     
         elif data_type == 'check_user_login':  # 'check_user_login으로 변경해야함'
              user_id  = data.get('id')
