@@ -124,7 +124,7 @@ const Option = ({ selectedDate }) => {
 
       {/* 장소 입력 및 선택 */}
       <div className="relative">
-        <input
+        <iuput
           type="text"
           placeholder="업체/장소"
           value={location}
