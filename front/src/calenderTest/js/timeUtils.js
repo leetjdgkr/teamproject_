@@ -19,3 +19,20 @@ export const convertHoursToHMS = (floatHours) => {
 
   return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
 };
+
+export const calculateDurationInHM = (start, end) => {
+  const [sh, sm] = start.split(":").map(Number);
+  const [eh, em] = end.split(":").map(Number);
+
+  const startDate = new Date(0, 0, 0, sh, sm);
+  const endDate = new Date(0, 0, 0, eh, em);
+  const diffMs = endDate - startDate;
+
+  if (diffMs <= 0) return "";
+
+  const diffMins = Math.floor(diffMs / 1000 / 60);
+  const hours = Math.floor(diffMins / 60);
+  const minutes = diffMins % 60;
+
+  return `${hours > 0 ? `${hours}시간` : ""} ${minutes > 0 ? `${minutes}분` : ""}`.trim();
+};
