@@ -181,7 +181,7 @@ const Option = ({ selectedDate }) => {
 
       {/* 작업 시간 선택 */}
       <div className="relative">
-        <input type="text" placeholder="작업 시간 선택" value={workTime} readOnly />
+        <input type="text" className="white-input" placeholder="작업 시간 선택" value={workTime}  disabled />
         <button
           type="button"
           onClick={() => setShowWorkTimes(!showWorkTimes)}
@@ -213,8 +213,8 @@ const Option = ({ selectedDate }) => {
           placeholder="업체/장소"
           value={location}
           onChange={(e) => setLocation(e.target.value)}
-          className="w-full p-2 border rounded"
-          required
+          className="w-full p-2 border rounded white-input"
+          disabled
         />
         <button
           type="button"
@@ -243,7 +243,7 @@ const Option = ({ selectedDate }) => {
       </div>
 
       {/* 총 작업 시간 */}
-      <input type="text" placeholder="총 작업 시간" value={totalWorkTime} readOnly />
+      <input type="text" className="white-input" placeholder="총 작업 시간" value={totalWorkTime}  disabled />
 
       {/* 잔업, 중식, 특근 섹션 */}
       <div className="space-y-6 mt-4">

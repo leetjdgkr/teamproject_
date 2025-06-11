@@ -10,7 +10,8 @@ export function useAddPersonLogic(existingEmployees, onSave, onClose) {
     maskedRsdnNmbr: "",
     phoneNumber: "",
     id: "",
-    pw: 1234,
+    pw: "",
+    carrier: "",  // 추가
   });
 
   const generateEmployeeNumber = () => {
@@ -32,6 +33,7 @@ export function useAddPersonLogic(existingEmployees, onSave, onClose) {
   const handleChange = (e) => {
     const { name, value } = e.target;
 
+    // 주민등록번호 포맷
     if (name === "rsdnNmbr") {
       const clean = value.replace(/[^0-9]/g, "").slice(0, 13);
       let formatted = clean;
@@ -44,7 +46,38 @@ export function useAddPersonLogic(existingEmployees, onSave, onClose) {
         rsdnNmbr: formatted,
         maskedRsdnNmbr: formatted,
       }));
-    } else {
+    }
+
+    // 전화번호 포맷
+    else if (name === "phoneNumber") {
+      const clean = value.replace(/[^0-9]/g, "").slice(0, 11);
+      let formatted = clean;
+
+      if (clean.length >= 11) {
+        // 3-4-4 자리 완전한 번호
+        formatted = clean.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3");
+      } else if (clean.length >= 7) {
+        // 3-4-남은자리
+        formatted = clean.replace(/(\d{3})(\d{4})(\d*)/, (_, g1, g2, g3) => {
+          return g3 ? `${g1}-${g2}-${g3}` : `${g1}-${g2}`;
+        });
+      } else if (clean.length >= 4) {
+        // 3-남은자리
+        formatted = clean.replace(/(\d{3})(\d*)/, (_, g1, g2) => {
+          return g2 ? `${g1}-${g2}` : g1;
+        });
+      } else {
+        formatted = clean;
+      }
+
+      setFormData((prev) => ({
+        ...prev,
+        phoneNumber: formatted,
+      }));
+    }
+
+    // 기본 처리
+    else {
       setFormData((prev) => ({ ...prev, [name]: value }));
     }
   };
