@@ -15,6 +15,7 @@ class User_Login_Info(models.Model):
     user_id         = models.CharField(max_length=50)
     password        = models.CharField(max_length=100, default='1234')
     phone_number    = models.CharField(max_length=20)
+    mobile_carrier  = models.CharField(max_length=10)
     resident_number = models.CharField(max_length=14)
     
     def save(self, *args, **kwargs):
