@@ -17,7 +17,16 @@ class User_Login_Info(models.Model):
     phone_number    = models.CharField(max_length=20)
     mobile_carrier  = models.CharField(max_length=10)
     resident_number = models.CharField(max_length=14)
+    address         = models.CharField(max_length=200)
     
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['employee_number'], name='unique_employee_number'),
+            models.UniqueConstraint(fields=['user_id'],         name='unique_user_id'),
+            models.UniqueConstraint(fields=['resident_number'], name='unique_resident_number'),
+            models.UniqueConstraint(fields=['phone_number'],    name='unique_phone_number'),
+        ]
+
     def save(self, *args, **kwargs):
         # 비밀번호가 해시되지 않은 상태일 때만 해시
         if not self.password.startswith('pbkdf2_'):  # Django 기본 prefix 체크
