@@ -38,8 +38,12 @@ const AdminInformation = ({ person, onClose, onSave }) => {
             <span>{formData.people}</span>
           </div>
           <div>
-            <label>생년월일: </label>
-            <span>{formData.birthday}</span>
+            <label>주민등록번호: </label>
+            <span>{formData.maskedRsdnNmbr}</span>
+          </div>
+          <div>
+            <label>주소: </label>
+            <input name="address" value={formData.address} onChange={handleChange} />
           </div>
           <div>
             <label>전화번호: </label>
