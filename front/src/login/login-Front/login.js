@@ -24,7 +24,7 @@ const Login = () => {
     const rgxCnd = {
         adminId: /^[A-Za-z0-9]{4,16}$/,
         adminPassword: /^[A-Za-z0-9]{4,14}$/,
-        adminOtp: /^[A-Za-z0-9]{6}$/,
+        adminOtp: /^\d{6}$/,  // 숫자 6자리
         staffId: /^[A-Za-z0-9]{4,16}$/,
         staffPw: /^[A-Za-z0-9]{4,14}$/
     };
@@ -41,10 +41,12 @@ const Login = () => {
                 setPassword(value);
                 break;
             case "adminOtp":
-                setadmin_code(value);
+                if (/^\d*$/.test(value)) { // 숫자만 입력 허용
+                    setadmin_code(value);
+                }
                 break;
             default:
-                console.log("값이 입력되지않음");
+                console.log("값이 입력되지 않음");
         }
     };
 
@@ -125,6 +127,7 @@ const Login = () => {
                 </div>
             </div>
 
+            {/* 관리자 로그인 */}
             <motion.div
                 className="Admin-register"
                 initial={{ opacity: 0, x: -20 }}
@@ -142,6 +145,7 @@ const Login = () => {
                         value={id}
                         onChange={handleChange}
                     />
+                    <span className="error">{errors.idError}</span>
                 </div>
                 <div className="admin_subbox">
                     <input
@@ -152,22 +156,26 @@ const Login = () => {
                         value={password}
                         onChange={handleChange}
                     />
+                    <span className="error">{errors.passwordError}</span>
                 </div>
                 <div className="admin_subbox">
                     <input
                         type="text"
                         id="adminOtp"
                         className="otp"
-                        placeholder="인증코드"
+                        placeholder="인증코드 (6자리 숫자)"
                         value={admin_code}
                         onChange={handleChange}
+                        maxLength={6}
                     />
+                    <span className="error">{errors.admin_codeError}</span>
                 </div>
                 <div className="check_message" style={{ display: login_check_message ? 'flex' : 'none' }}>
-                    {login_check_message && <span className="tooltip" style={{ color: 'red' }}>{login_check_message}</span>}
+                    <span className="tooltip" style={{ color: 'red' }}>{login_check_message}</span>
                 </div>
             </motion.div>
 
+            {/* 사원 로그인 */}
             <motion.div
                 className="Staff-register"
                 initial={{ opacity: 0, x: 20 }}
@@ -185,6 +193,7 @@ const Login = () => {
                         value={id}
                         onChange={handleChange}
                     />
+                    <span className="error">{errors.idError}</span>
                 </div>
                 <div className="staff_subbox">
                     <input
@@ -195,9 +204,10 @@ const Login = () => {
                         value={password}
                         onChange={handleChange}
                     />
+                    <span className="error">{errors.passwordError}</span>
                 </div>
                 <div className="check_message" style={{ display: login_check_message ? 'flex' : 'none' }}>
-                    {login_check_message && <span className="tooltip" style={{ color: 'red' }}>{login_check_message}</span>}
+                    <span className="tooltip" style={{ color: 'red' }}>{login_check_message}</span>
                 </div>
             </motion.div>
 
@@ -207,3 +217,5 @@ const Login = () => {
 };
 
 export default Login;
+
+
