@@ -1,17 +1,48 @@
-import React from "react";
-import { useAddPersonLogic } from "../js/useAddPersonLogic"; // 경로 확인!
+import React, { useState } from "react";
+import { useAddPersonLogic } from "../js/useAddPersonLogic"; // 로직 훅
 import "../css/showAddmodel.css";
 
 const AddPersonModal = ({ onSave, onClose, existingEmployees }) => {
-  const { formData, handleChange, handleSubmit } =
-    useAddPersonLogic(existingEmployees, onSave, onClose);
+  const { formData, handleChange, handleSubmitBase, setFormData } =
+    useAddPersonLogic(existingEmployees, onSaveWithFullAddress, onClose);
 
-  // 전화번호 + 통신사 포함한 fields 배열
+  // 상세 주소 따로 관리
+  const [adressDetail, setAdressDetail] = useState("");
+
+  // 다음 주소 API
+  const handleAddressSearch = () => {
+    new window.daum.Postcode({
+      oncomplete: function (data) {
+        const fullAddress = data.address;
+        setFormData((prev) => ({
+          ...prev,
+          address: fullAddress,
+        }));
+      },
+    }).open();
+  };
+
+  // 실제 저장 함수
+  function onSaveWithFullAddress(data) {
+    const fullAddress = `${formData.adress} ${adressDetail}`.trim();
+    const merged = {
+      ...data,
+      adress: fullAddress, // 이 형태로 최종 주소 전송
+    };
+    onSave(merged);
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    handleSubmitBase(e); // 내부적으로 onSaveWithFullAddress 호출
+  };
+
   const fields = [
     { label: "사원번호", name: "employeeNumber", value: formData.employeeNumber, readOnly: true },
     { label: "이름", name: "people", value: formData.people, placeholder: "ex)홍길동", maxLength: 8 },
     { label: "주민등록번호", name: "rsdnNmbr", value: formData.maskedRsdnNmbr, placeholder: "ex)000000-0******" },
-    { label: "전화번호", name: "phoneNumber" }, // 특수 렌더링
+    { label: "전화번호", name: "phoneNumber" },
+    { label: "주소", name: "adress", value: formData.address, placeholder: "ex) 충청남도 OO시 OO군..." },
     { label: "ID", name: "id", value: formData.id, placeholder: "ex)hong123", maxLength: 12 },
     { label: "비밀번호", name: "pw", value: formData.pw, placeholder: "ex)1234", maxLength: 16 },
   ];
@@ -23,7 +54,6 @@ const AddPersonModal = ({ onSave, onClose, existingEmployees }) => {
         <form onSubmit={handleSubmit}>
           {fields.map((field, idx) => {
             if (field.name === "phoneNumber") {
-              // 전화번호 + 통신사 한 줄에 렌더링
               return (
                 <div className="form-row flex-row" key={idx}>
                   <label>{field.label} :</label>
@@ -49,6 +79,31 @@ const AddPersonModal = ({ onSave, onClose, existingEmployees }) => {
                   />
                 </div>
               );
+            } else if (field.name === "adress") {
+              return (
+                <div key={idx}>
+                  <div className="form-row">
+                    <label>{field.label} :</label>
+                    <input
+                      type="text"
+                      name="adress"
+                      value={formData.address}
+                      readOnly
+                      placeholder={field.placeholder}
+                    />
+                    <button type="button" onClick={handleAddressSearch}>주소 검색</button>
+                  </div>
+                  <div className="form-row">
+                    <label>상세 주소 :</label>
+                    <input
+                      type="text"
+                      value={adressDetail}
+                      onChange={(e) => setAdressDetail(e.target.value)}
+                      placeholder="ex) 아파트, 동/호수 등"
+                    />
+                  </div>
+                </div>
+              );
             } else {
               return (
                 <div className="form-row" key={idx}>
@@ -69,7 +124,6 @@ const AddPersonModal = ({ onSave, onClose, existingEmployees }) => {
               );
             }
           })}
-
           <button type="submit">저장</button>
           <button type="button" onClick={onClose}>취소</button>
         </form>
