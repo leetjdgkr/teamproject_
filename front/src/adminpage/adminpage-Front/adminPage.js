@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import AdminInformation from "./adminInformation";
-import AddPersonModal from "./addPersonModal";
+import AddPersonModal from "./addPersonModal";  // 기존 추가 모달
 import AddButton from "./adminAddBtn";
 import UserContext from "../../login/js/userContext";
 import "../css/adminPage.css";
@@ -18,8 +18,8 @@ const AdminPage = () => {
       setPeopleData(userData);
     }
   }, [userData]);
- console.log(userData)
-  const peopleHeader = [" ", "사원 번호", "이름", "주민등록번호","주소","전화번호"];
+
+  const peopleHeader = [" ", "사원 번호", "이름", "주민등록번호", "주소", "전화번호"];
 
   const handleRowClick = (person) => {
     setSelectedPerson(person);
@@ -32,7 +32,7 @@ const AdminPage = () => {
   const handleSave = (updatedPerson) => {
     setPeopleData((prev) =>
       prev.map((item) =>
-        item.people === updatedPerson.people ? updatedPerson : item
+        item.employee_number === updatedPerson.employee_number ? updatedPerson : item
       )
     );
     setSelectedPerson(null);
@@ -51,15 +51,15 @@ const AdminPage = () => {
     setShowAddModal(false);
   };
 
-  const handleCheckboxChange = (company) => {
+  const handleCheckboxChange = (employee_number) => {
     setCheckedItems((prev) => ({
       ...prev,
-      [company]: !prev[company],
+      [employee_number]: !prev[employee_number],
     }));
   };
 
   const handleDeleteSelected = () => {
-    const remaining = peopleData.filter((person) => !checkedItems[person.company]);
+    const remaining = peopleData.filter((person) => !checkedItems[person.employee_number]);
     setPeopleData(remaining);
     setCheckedItems({});
   };
@@ -86,8 +86,12 @@ const AdminPage = () => {
           </tr>
         </thead>
         <tbody>
-          {peopleData.map((item, index) => (
-            <tr key={index} onClick={() => handleRowClick(item)} style={{ cursor: "pointer" }}>
+          {peopleData.map((item) => (
+            <tr
+              key={item.employee_number}
+              onClick={() => handleRowClick(item)}
+              style={{ cursor: "pointer" }}
+            >
               <td onClick={(e) => e.stopPropagation()}>
                 <input
                   type="checkbox"
@@ -99,8 +103,8 @@ const AdminPage = () => {
               <td>{item.employee_number}</td>
               <td>{item.user_name}</td>
               <td>{item.resident_number}</td>
+              <td>{item.address}</td>
               <td>{item.phone_number}</td>
-              <td>{item.mobile_carrier}</td>
             </tr>
           ))}
         </tbody>

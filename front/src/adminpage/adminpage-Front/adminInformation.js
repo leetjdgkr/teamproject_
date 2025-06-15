@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useContext } from "react";
 import AdminPanel from "../adminpage-Front/admnsButon";
 import '../css/adminInformation.css';
+import UserContext from "../../login/js/userContext";
 import { useAdminInformationLogic } from "../js/useAdminInformationLogic";
 
 const AdminInformation = ({ person, onClose, onSave }) => {
@@ -31,23 +32,23 @@ const AdminInformation = ({ person, onClose, onSave }) => {
         <form onSubmit={handleSubmit}>
           <div>
             <label>사원 번호: </label>
-            <span>{formData.company}</span>
+            <span>{formData.employee_number}</span>
           </div>
           <div>
             <label>이름: </label>
-            <span>{formData.people}</span>
+            <span>{formData.user_name}</span>
           </div>
           <div>
             <label>주민등록번호: </label>
-            <span>{formData.maskedRsdnNmbr}</span>
+            <span>{formData.resident_number}</span>
           </div>
           <div>
             <label>주소: </label>
-            <input name="address" value={formData.address} onChange={handleChange} />
+            <input name="address" value={formData.address || ""} onChange={handleChange} />
           </div>
           <div>
             <label>전화번호: </label>
-            <input name="phoneNumber" value={formData.phoneNumber} onChange={handleChange} />
+            <input name="phone_number" value={formData.phone_number || ""} onChange={handleChange} />
           </div>
           <button type="submit">저장</button>
           <button type="button" className="closeBtn" onClick={onClose}>X</button>
