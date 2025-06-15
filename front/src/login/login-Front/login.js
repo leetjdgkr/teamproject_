@@ -7,7 +7,7 @@ import { HandleLogin } from '../js/logindata';
 import UserContext from "../js/userContext";
 
 const Login = () => {
-    const { setUser, setEmployeeNumber } = useContext(UserContext);
+    const { setUser, setEmployeeNumber, setUserData } = useContext(UserContext);
     const navigate = useNavigate();
     const [id, setId] = useState("");
     const [password, setPassword] = useState("");
@@ -71,8 +71,9 @@ const Login = () => {
             if (loginsuccess.success === "admin") {
                 setFadeOut(true);
                 setUser("admin");
+                setUserData(loginsuccess.user_Data)
                 sessionStorage.setItem("userRole", "admin");
-
+                sessionStorage.setItem("userData", JSON.stringify(loginsuccess.user_Data));
                 setTimeout(() => {
                     navigate('/adminPage');
                 }, 500);

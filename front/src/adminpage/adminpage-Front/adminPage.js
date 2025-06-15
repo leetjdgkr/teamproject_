@@ -1,21 +1,25 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import AdminInformation from "./adminInformation";
 import AddPersonModal from "./addPersonModal";
 import AddButton from "./adminAddBtn";
+import UserContext from "../../login/js/userContext";
 import "../css/adminPage.css";
 
 const AdminPage = () => {
+  const { userData } = useContext(UserContext);
+
   const [selectedPerson, setSelectedPerson] = useState(null);
   const [showAddModal, setShowAddModal] = useState(false);
-  const [peopleData, setPeopleData] = useState([
-    { people: "김재선", rsdnNmbr: "", phoneNumber: "010-4134-9069", company: "SEOSAN_001" },
-    { people: "남진우", rsdnNmbr: "", phoneNumber: "010-3954-7589", company: "SEOSAN_002" },
-  ]);
-
-  // 체크된 사원 관리 상태 (company를 key로)
+  const [peopleData, setPeopleData] = useState([]);
   const [checkedItems, setCheckedItems] = useState({});
 
-  const peopleHeader = [" ", "사원 번호", "이름", "주민등록번호", "전화번호"];
+  useEffect(() => {
+    if (userData && userData.length > 0) {
+      setPeopleData(userData);
+    }
+  }, [userData]);
+ console.log(userData)
+  const peopleHeader = [" ", "사원 번호", "이름", "주민등록번호","주소","전화번호"];
 
   const handleRowClick = (person) => {
     setSelectedPerson(person);
@@ -47,7 +51,6 @@ const AdminPage = () => {
     setShowAddModal(false);
   };
 
-  // 체크박스 토글 함수
   const handleCheckboxChange = (company) => {
     setCheckedItems((prev) => ({
       ...prev,
@@ -55,7 +58,6 @@ const AdminPage = () => {
     }));
   };
 
-  // 삭제 함수
   const handleDeleteSelected = () => {
     const remaining = peopleData.filter((person) => !checkedItems[person.company]);
     setPeopleData(remaining);
@@ -85,31 +87,25 @@ const AdminPage = () => {
         </thead>
         <tbody>
           {peopleData.map((item, index) => (
-            <tr
-              key={index}
-              onClick={() => handleRowClick(item)}
-              style={{ cursor: "pointer" }}
-            >
+            <tr key={index} onClick={() => handleRowClick(item)} style={{ cursor: "pointer" }}>
               <td onClick={(e) => e.stopPropagation()}>
-                {/* 클릭 시 모달이 뜨는걸 막기 위해 이벤트 버블링 막음 */}
                 <input
                   type="checkbox"
                   className="custom-checkbox"
-                  checked={!!checkedItems[item.company]}
-                  //!! -> 값이 있으면 true 없으면 false 를 반환
-                  onChange={() => handleCheckboxChange(item.company)}
+                  checked={!!checkedItems[item.employee_number]}
+                  onChange={() => handleCheckboxChange(item.employee_number)}
                 />
               </td>
-              <td>{item.company}</td>
-              <td>{item.people}</td>
-              <td>{item.birthday}</td>
-              <td>{item.phoneNumber}</td>
+              <td>{item.employee_number}</td>
+              <td>{item.user_name}</td>
+              <td>{item.resident_number}</td>
+              <td>{item.phone_number}</td>
+              <td>{item.mobile_carrier}</td>
             </tr>
           ))}
         </tbody>
       </table>
 
-      {/* 행 클릭 시 모달 */}
       {selectedPerson && (
         <AdminInformation
           person={selectedPerson}
