@@ -4,10 +4,7 @@ import "../css/showAddmodel.css";
 
 const AddPersonModal = ({ onSave, onClose, existingEmployees }) => {
   const { formData, handleChange, handleSubmitBase, setFormData } =
-    useAddPersonLogic(existingEmployees, onSaveWithFullAddress, onClose);
-
-  // 상세 주소 따로 관리
-  const [adressDetail, setAdressDetail] = useState("");
+    useAddPersonLogic(existingEmployees, onClose);
 
   // 다음 주소 API
   const handleAddressSearch = () => {
@@ -22,15 +19,6 @@ const AddPersonModal = ({ onSave, onClose, existingEmployees }) => {
     }).open();
   };
 
-  // 실제 저장 함수
-  function onSaveWithFullAddress(data) {
-    const fullAddress = `${formData.adress} ${adressDetail}`.trim();
-    const merged = {
-      ...data,
-      adress: fullAddress, // 이 형태로 최종 주소 전송
-    };
-    onSave(merged);
-  }
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -42,7 +30,7 @@ const AddPersonModal = ({ onSave, onClose, existingEmployees }) => {
     { label: "이름", name: "people", value: formData.people, placeholder: "ex)홍길동", maxLength: 8 },
     { label: "주민등록번호", name: "rsdnNmbr", value: formData.maskedRsdnNmbr, placeholder: "ex)000000-0******" },
     { label: "전화번호", name: "phoneNumber" },
-    { label: "주소", name: "adress", value: formData.address, placeholder: "ex) 충청남도 OO시 OO군..." },
+    { label: "주소", name: "address", value: formData.address, placeholder: "ex) 충청남도 OO시 OO군..." },
     { label: "ID", name: "id", value: formData.id, placeholder: "ex)hong123", maxLength: 12 },
     { label: "비밀번호", name: "pw", value: formData.pw, placeholder: "ex)1234", maxLength: 16 },
   ];
@@ -79,7 +67,7 @@ const AddPersonModal = ({ onSave, onClose, existingEmployees }) => {
                   />
                 </div>
               );
-            } else if (field.name === "adress") {
+            } else if (field.name === "address") {
               return (
                 <div key={idx}>
                   <div className="form-row">
@@ -97,8 +85,9 @@ const AddPersonModal = ({ onSave, onClose, existingEmployees }) => {
                     <label>상세 주소 :</label>
                     <input
                       type="text"
-                      value={adressDetail}
-                      onChange={(e) => setAdressDetail(e.target.value)}
+                      name="addressDetail"
+                      value={formData.addressDetail}
+                      onChange={handleChange}
                       placeholder="ex) 아파트, 동/호수 등"
                     />
                   </div>

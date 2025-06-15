@@ -12,7 +12,8 @@ export function useAddPersonLogic(existingEmployees, onSave, onClose) {
     id: "",
     pw: "",
     carrier: "",  // 추가
-    address: ""
+    address: "",
+    addressDetail: ""
   });
 
   const generateEmployeeNumber = () => {
@@ -85,7 +86,7 @@ export function useAddPersonLogic(existingEmployees, onSave, onClose) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { people, rsdnNmbr, phoneNumber, employeeNumber, id, pw, carrier, address } = formData;
+    const { people, rsdnNmbr, phoneNumber, employeeNumber, id, pw, carrier, address, addressDetail } = formData;
 
     if (!people || !rsdnNmbr || !phoneNumber) {
       alert("모든 필드를 입력하세요");
@@ -113,7 +114,7 @@ export function useAddPersonLogic(existingEmployees, onSave, onClose) {
         phone_number: phoneNumber,
         mobile_carrier : carrier,
         resident_number: rsdnNmbr,
-        address : address
+        address : address + " " + addressDetail 
       },
     };
 
