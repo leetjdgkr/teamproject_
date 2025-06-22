@@ -8,14 +8,16 @@ export function useFilteredData(queryParams) {
       try {
         // 여기서 필요한 형태로 데이터 변환
         const payload = {
-            data_type: "filtering",
-            filetering: queryParams.filters,
-            ...(queryParams.sort?.direction
-                ? { sorting: queryParams.sort.direction === "desc"
-                    ? "-" + queryParams.sort.key
-                    : queryParams.sort.key
-                }
-                : {})
+            data_type: "table_filtering",
+            data:{
+                filtering: queryParams.filters,
+                ...(queryParams.sort?.direction
+                    ? { sorting: queryParams.sort.direction === "desc"
+                        ? "-" + queryParams.sort.key
+                        : queryParams.sort.key
+                    }
+                    : {})
+            }
         };
         console.log("보내는 payload:", JSON.stringify(payload, null, 2));
         const res = await fetch("http://127.0.0.1:8000/api/items/", {
