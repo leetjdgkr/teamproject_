@@ -71,6 +71,33 @@ class BaseModelHandler(APIView):
                      return {'success': True, 'message': 'Login successful', 'user_data': user_data}, None
                  else:
                      return None, {'success': False, 'message': 'Invalid credentials'}
+                 
+        elif data_type == 'filtering':
+            filetering = data.get('filetering', {})  # 조건을 가져옵니다.
+            sorting    = data.get('sorting')  # 정렬 기준을 가져옵니다.
+        
+            try:
+                filters = {}
+                for key, value in filetering.items():
+                    if isinstance(value, str):  # 문자열이면 LIKE 조건 처리
+                        filters[f'{key}__icontains'] = value
+                    elif isinstance(value, (int, float)):  # 숫자일 경우 LIKE 조건 처리
+                        filters[f'{key}__icontains'] = str(value)
+                    else:
+                        filters[key] = value  # 다른 타입은 그냥 필터링
+        
+                # 조건이 없으면 filter는 모든 데이터를 반환함
+                queryset = User_Login_Info.objects.filter(**filters)
+        
+                # 정렬 기준이 있을 경우에만 order_by 적용
+                if sorting:
+                    queryset = queryset.order_by(*sorting)
+        
+                result = list(queryset.values())
+                return {'success': True, 'data': result}, None
+        
+            except Exception as e:
+                return None, {'error': str(e)}
 
         return None, {'error': 'Unknown data_type'}
     
