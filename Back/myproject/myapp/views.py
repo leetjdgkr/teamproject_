@@ -72,13 +72,13 @@ class BaseModelHandler(APIView):
                  else:
                      return None, {'success': False, 'message': 'Invalid credentials'}
                  
-        elif data_type == 'filtering':
-            filetering = data.get('filetering', {})  # 조건을 가져옵니다.
+        elif data_type == 'table_filtering':
+            filtering = data.get('filtering', {})  # 조건을 가져옵니다.
             sorting    = data.get('sorting')  # 정렬 기준을 가져옵니다.
         
             try:
                 filters = {}
-                for key, value in filetering.items():
+                for key, value in filtering.items():
                     if isinstance(value, str):  # 문자열이면 LIKE 조건 처리
                         filters[f'{key}__icontains'] = value
                     elif isinstance(value, (int, float)):  # 숫자일 경우 LIKE 조건 처리
