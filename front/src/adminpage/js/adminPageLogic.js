@@ -28,6 +28,7 @@ export function useFilteredData(queryParams) {
 
         const result = await res.json();
         setData(result);
+        console.log(result)
       } catch (err) {
         console.error("서버 요청 실패:", err);
       }
