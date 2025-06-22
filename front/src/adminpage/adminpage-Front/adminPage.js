@@ -3,6 +3,7 @@ import AdminInformation from "./adminInformation";
 import AddPersonModal from "./addPersonModal";  // 기존 추가 모달
 import AddButton from "./adminAddBtn";
 import UserContext from "../../login/js/userContext";
+import { useFilteredData } from "../js/adminPageLogic";
 import "../css/adminPage.css";
 
 const AdminPage = () => {
@@ -10,17 +11,24 @@ const AdminPage = () => {
 
   const [selectedPerson, setSelectedPerson] = useState(null);
   const [showAddModal, setShowAddModal] = useState(false);
-  const [peopleData, setPeopleData] = useState([]);
   const [checkedItems, setCheckedItems] = useState({});
+  const [peopleData, setPeopleData] = useState([]);
+  const [queryParams, setQueryParams] = useState({
+    filters: {},
+    sort: null,
+  });
+  const filteredDataFromServer = useFilteredData(queryParams);
 
   useEffect(() => {
-    if (userData && userData.length > 0) {
+    if (filteredDataFromServer && filteredDataFromServer.length > 0) {
+      setPeopleData(filteredDataFromServer);
+    }
+  }, [filteredDataFromServer]);
+  useEffect(() => {
+    if (userData && userData.length > 0 && peopleData.length === 0) {
       setPeopleData(userData);
     }
-  }, [userData]);
-
-  const peopleHeader = [" ", "사원 번호", "이름", "주민등록번호", "주소", "전화번호"];
-
+  }, [userData, peopleData]);
   const handleRowClick = (person) => {
     setSelectedPerson(person);
   };
@@ -63,7 +71,25 @@ const AdminPage = () => {
     setPeopleData(remaining);
     setCheckedItems({});
   };
-
+  const handleFilterInput = (key, value) => {
+    setQueryParams((prev) => ({
+      ...prev,
+      filters: {
+        ...prev.filters,
+        [key]: value,
+      },
+    }));
+  };
+  const handleSortChange = (key, direction) => {
+    if (!direction) {
+      setQueryParams((prev) => ({ ...prev, sort: null }));
+      return;
+    }
+    setQueryParams((prev) => ({
+      ...prev,
+      sort: { key, direction },
+    }));
+  };
   return (
     <div className="adminPage_Bk">
       <div className="add-button-wrapper" style={{ marginBottom: "10px" }}>
@@ -76,13 +102,51 @@ const AdminPage = () => {
           선택 삭제
         </button>
       </div>
-
       <table>
-        <thead>
+       <thead>
           <tr>
-            {peopleHeader.map((item, idx) => (
-              <th key={idx}>{item}</th>
-            ))}
+            <th></th>
+            <th>
+              사원 번호
+              <input
+                type="text"
+                placeholder="사원번호 검색"
+                onChange={(e) => handleFilterInput("employee_number", e.target.value)}
+              />
+              <select onChange={(e) => handleSortChange("employee_number", e.target.value)}>
+                <option value="">정렬 안함</option>
+                <option value="asc">오름차순</option>
+                <option value="desc">내림차순</option>
+              </select>
+            </th>
+            <th>
+              이름
+              <input
+                type="text"
+                placeholder="이름 검색"
+                onChange={(e) => handleFilterInput("user_name", e.target.value)}
+              />
+              <select onChange={(e) => handleSortChange("user_name", e.target.value)}>
+                <option value="">정렬 안함</option>
+                <option value="asc">오름차순</option>
+                <option value="desc">내림차순</option>
+              </select>
+            </th>
+            <th>주민등록번호</th>
+            <th>주소</th>
+            <th>
+              전화번호
+              <input
+                type="text"
+                placeholder="전화번호 검색"
+                onChange={(e) => handleFilterInput("phone_number", e.target.value)}
+              />
+              <select onChange={(e) => handleSortChange("phone_number", e.target.value)}>
+                <option value="">정렬 안함</option>
+                <option value="asc">오름차순</option>
+                <option value="desc">내림차순</option>
+              </select>
+            </th>
           </tr>
         </thead>
         <tbody>
