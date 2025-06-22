@@ -9,15 +9,15 @@ export function useFilteredData(queryParams) {
         // 여기서 필요한 형태로 데이터 변환
         const payload = {
             data_type: "filtering",
-            filters: queryParams.filters,
-            sort:
-                queryParams.sort?.direction === "desc"
-                ? "-" + queryParams.sort.key
-                : queryParams.sort?.direction === "asc"
-                ? queryParams.sort.key
-                : null,
+            filetering: queryParams.filters,
+            ...(queryParams.sort?.direction
+                ? { sorting: queryParams.sort.direction === "desc"
+                    ? "-" + queryParams.sort.key
+                    : queryParams.sort.key
+                }
+                : {})
         };
-        console.log(payload)
+        console.log("보내는 payload:", JSON.stringify(payload, null, 2));
         const res = await fetch("http://127.0.0.1:8000/api/items/", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
