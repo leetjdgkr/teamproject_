@@ -91,7 +91,7 @@ class BaseModelHandler(APIView):
         
                 # 정렬 기준이 있을 경우에만 order_by 적용
                 if sorting:
-                    queryset = queryset.order_by(*sorting)
+                    queryset = queryset.order_by(sorting)
         
                 result = list(queryset.values())
                 return {'success': True, 'data': result}, None
