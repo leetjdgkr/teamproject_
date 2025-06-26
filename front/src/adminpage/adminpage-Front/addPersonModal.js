@@ -51,7 +51,7 @@ const AddPersonModal = ({ onSave, onClose, existingEmployees }) => {
                     onChange={handleChange}
                     className="carrier-select"
                   >
-                    <option value="">통신사 선택</option>
+                    <option value="">통신사</option>
                     <option value="SKT">SKT</option>
                     <option value="KT">KT</option>
                     <option value="LGU+">LG U+</option>

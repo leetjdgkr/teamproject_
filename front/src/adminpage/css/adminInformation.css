@@ -11,3 +11,66 @@
     font-weight: bold;
     cursor: pointer;
 }
+/* 모달 배경 */
+.searchModal {
+  position: fixed;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  background-color: rgba(0,0,0,0.5);
+  display: flex; justify-content: center; align-items: center;
+  z-index: 999;
+}
+
+/* 모달 내부 박스 */
+.searchModal__content {
+  background: white;
+  padding: 20px 30px;
+  border-radius: 8px;
+  width: 360px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+/* 모달 내부 인풋, 셀렉트 */
+.searchModal__content input[type="text"],
+.searchModal__content select {
+  width: 100%;
+  padding: 8px 10px;
+  margin-top: 6px;
+  margin-bottom: 16px;
+  box-sizing: border-box;
+  font-size: 15px;
+  border: 1.5px solid #aaa;
+  border-radius: 5px;
+  transition: border-color 0.2s ease;
+}
+
+.searchModal__content input[type="text"]:focus,
+.searchModal__content select:focus {
+  outline: none;
+  border-color: #1976d2;
+  box-shadow: 0 0 6px rgba(25, 118, 210, 0.5);
+}
+
+/* 버튼 스타일 */
+.searchModal__content button {
+  padding: 10px 18px;
+  font-weight: 600;
+  border-radius: 5px;
+  border: none;
+  background-color: #1976d2;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.searchModal__content button:hover {
+  background-color: #1565c0;
+}
+
+.searchModal__content button:last-child {
+  background-color: #e91e63;
+  margin-left: 10px;
+}
+
+.searchModal__content button:last-child:hover {
+  background-color: #c2185b;
+}

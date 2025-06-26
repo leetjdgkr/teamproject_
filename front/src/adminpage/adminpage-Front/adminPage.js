@@ -3,27 +3,26 @@ import AdminInformation from "./adminInformation";
 import AddPersonModal from "./addPersonModal";
 import AddButton from "./adminAddBtn";
 import UserContext from "../../login/js/userContext";
-import { useFilteredData } from "../js/adminPageLogic";
+import { fetchFilteredPeople } from "../js/adminPageLogic";
 import "../css/adminPage.css";
+
+const initialSearchForm = {
+  employee_number: "",
+  user_name: "",
+  phone_number: "",
+  sortKey: "",
+  sortDirection: "",
+};
 
 const AdminPage = () => {
   const { userData } = useContext(UserContext);
 
   const [selectedPerson, setSelectedPerson] = useState(null);
   const [showAddModal, setShowAddModal] = useState(false);
+  const [showSearchModal, setShowSearchModal] = useState(false);
   const [checkedItems, setCheckedItems] = useState({});
   const [peopleData, setPeopleData] = useState([]);
-  const [queryParams, setQueryParams] = useState({
-    filters: {},
-    sort: null,
-  });
-  const filteredDataFromServer = useFilteredData(queryParams);
-
-  useEffect(() => {
-    if (filteredDataFromServer && filteredDataFromServer.length > 0) {
-      setPeopleData(filteredDataFromServer);
-    }
-  }, [filteredDataFromServer]);
+  const [searchForm, setSearchForm] = useState(initialSearchForm);
 
   useEffect(() => {
     if (userData && userData.length > 0 && peopleData.length === 0) {
@@ -74,28 +73,6 @@ const AdminPage = () => {
     setCheckedItems({});
   };
 
-  const handleFilterInput = (key, value) => {
-    setQueryParams((prev) => ({
-      ...prev,
-      filters: {
-        ...prev.filters,
-        [key]: value,
-      },
-    }));
-  };
-
-  const handleSortChange = (key, direction) => {
-    if (!direction) {
-      setQueryParams((prev) => ({ ...prev, sort: null }));
-      return;
-    }
-    setQueryParams((prev) => ({
-      ...prev,
-      sort: { key, direction },
-    }));
-  };
-
-  // --- 리사이저 관련 state 및 ref ---
   const [columnWidths, setColumnWidths] = useState({
     employee_number: 150,
     user_name: 150,
@@ -133,16 +110,51 @@ const AdminPage = () => {
     window.removeEventListener("mouseup", onMouseUp);
   };
 
+  const openSearchModal = () => {
+    setSearchForm(initialSearchForm);
+    setShowSearchModal(true);
+  };
+
+  const closeSearchModal = () => {
+    setShowSearchModal(false);
+  };
+
+  const handleSearchFormChange = (e) => {
+    const { name, value } = e.target;
+    setSearchForm((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const applySearch = async () => {
+    const { employee_number, user_name, phone_number, sortKey, sortDirection } = searchForm;
+
+    const filters = {};
+    if (employee_number.trim()) filters.employee_number = employee_number.trim();
+    if (user_name.trim()) filters.user_name = user_name.trim();
+    if (phone_number.trim()) filters.phone_number = phone_number.trim();
+
+    const sort = sortKey && sortDirection ? { key: sortKey, direction: sortDirection } : null;
+
+    const result = await fetchFilteredPeople({ filters, sort });
+    setPeopleData(result);
+    closeSearchModal();
+  };
+
   return (
     <div className="adminPage_Bk">
-      <div className="add-button-wrapper" style={{ marginBottom: "10px" }}>
+      <div style={{ marginBottom: 10 }}>
         <AddButton onAdd={handleaddLow} />
         <button
           onClick={handleDeleteSelected}
           disabled={Object.values(checkedItems).every((checked) => !checked)}
-          style={{ marginLeft: "10px" }}
+          style={{ marginLeft: 10 }}
         >
           선택 삭제
+        </button>
+        <button onClick={openSearchModal} style={{ marginLeft: 10 }}>
+          검색 / 정렬
         </button>
       </div>
 
@@ -150,64 +162,13 @@ const AdminPage = () => {
         <thead>
           <tr>
             <th style={{ width: 30 }}></th>
-
-            <th style={{ width: columnWidths.employee_number, position: "relative" }}>
-              사원 번호
-              <input
-                type="text"
-                placeholder="사원번호 검색"
-                onChange={(e) => handleFilterInput("employee_number", e.target.value)}
-              />
-              <select onChange={(e) => handleSortChange("employee_number", e.target.value)}>
-                <option value="">정렬 안함</option>
-                <option value="asc">오름차순</option>
-                <option value="desc">내림차순</option>
-              </select>
-              <div onMouseDown={(e) => onMouseDown(e, "employee_number")} className="column-resizer" />
-            </th>
-
-            <th style={{ width: columnWidths.user_name, position: "relative" }}>
-              이름
-              <input
-                type="text"
-                placeholder="이름 검색"
-                onChange={(e) => handleFilterInput("user_name", e.target.value)}
-              />
-              <select onChange={(e) => handleSortChange("user_name", e.target.value)}>
-                <option value="">정렬 안함</option>
-                <option value="asc">오름차순</option>
-                <option value="desc">내림차순</option>
-              </select>
-              <div onMouseDown={(e) => onMouseDown(e, "user_name")} className="column-resizer" />
-            </th>
-
-            <th style={{ width: columnWidths.resident_number, position: "relative" }}>
-              주민등록번호
-              <div onMouseDown={(e) => onMouseDown(e, "resident_number")} className="column-resizer" />
-            </th>
-
-            <th style={{ width: columnWidths.address, position: "relative" }}>
-              주소
-              <div onMouseDown={(e) => onMouseDown(e, "address")} className="column-resizer" />
-            </th>
-
-            <th style={{ width: columnWidths.phone_number, position: "relative" }}>
-              전화번호
-              <input
-                type="text"
-                placeholder="전화번호 검색"
-                onChange={(e) => handleFilterInput("phone_number", e.target.value)}
-              />
-              <select onChange={(e) => handleSortChange("phone_number", e.target.value)}>
-                <option value="">정렬 안함</option>
-                <option value="asc">오름차순</option>
-                <option value="desc">내림차순</option>
-              </select>
-              <div onMouseDown={(e) => onMouseDown(e, "phone_number")} className="column-resizer" />
-            </th>
+            <th style={{ width: columnWidths.employee_number }}>사원 번호</th>
+            <th style={{ width: columnWidths.user_name }}>이름</th>
+            <th style={{ width: columnWidths.resident_number }}>주민등록번호</th>
+            <th style={{ width: columnWidths.address }}>주소</th>
+            <th style={{ width: columnWidths.phone_number }}>전화번호</th>
           </tr>
         </thead>
-
         <tbody>
           {peopleData.map((item) => (
             <tr key={item.employee_number} onClick={() => handleRowClick(item)} style={{ cursor: "pointer" }}>
@@ -230,19 +191,88 @@ const AdminPage = () => {
       </table>
 
       {selectedPerson && (
-        <AdminInformation
-          person={selectedPerson}
-          onClose={handleCloseModal}
-          onSave={handleSave}
-        />
+        <AdminInformation person={selectedPerson} onClose={handleCloseModal} onSave={handleSave} />
       )}
 
       {showAddModal && (
-        <AddPersonModal
-          onSave={handleSaveNewPerson}
-          onClose={handleCloseAddModal}
-          existingEmployees={peopleData}
-        />
+        <AddPersonModal onSave={handleSaveNewPerson} onClose={handleCloseAddModal} existingEmployees={peopleData} />
+      )}
+
+      {showSearchModal && (
+        <div className="searchModal" onClick={closeSearchModal}>
+          <div className="searchModal__content" onClick={(e) => e.stopPropagation()}>
+            <h3>검색 / 정렬 조건 입력</h3>
+            <label>
+              사원 번호:
+              <input
+                type="text"
+                name="employee_number"
+                value={searchForm.employee_number}
+                onChange={handleSearchFormChange}
+                placeholder="사원번호 입력"
+                className="searchModal__input"
+              />
+            </label>
+            <label>
+              이름:
+              <input
+                type="text"
+                name="user_name"
+                value={searchForm.user_name}
+                onChange={handleSearchFormChange}
+                placeholder="이름 입력"
+                className="searchModal__input"
+              />
+            </label>
+            <label>
+              전화번호:
+              <input
+                type="text"
+                name="phone_number"
+                value={searchForm.phone_number}
+                onChange={handleSearchFormChange}
+                placeholder="전화번호 입력"
+                className="searchModal__input"
+              />
+            </label>
+            <label>
+              정렬 기준:
+              <select
+                name="sortKey"
+                value={searchForm.sortKey}
+                onChange={handleSearchFormChange}
+                className="searchModal__select"
+              >
+                <option value="">선택 안함</option>
+                <option value="employee_number">사원 번호</option>
+                <option value="user_name">이름</option>
+                <option value="phone_number">전화번호</option>
+              </select>
+            </label>
+            <label>
+              정렬 방식:
+              <select
+                name="sortDirection"
+                value={searchForm.sortDirection}
+                onChange={handleSearchFormChange}
+                className="searchModal__select"
+              >
+                <option value="">선택 안함</option>
+                <option value="asc">오름차순</option>
+                <option value="desc">내림차순</option>
+              </select>
+            </label>
+
+            <div className="searchModal__btnGroup">
+              <button onClick={applySearch} className="searchModal__btnApply">
+                적용
+              </button>
+              <button onClick={closeSearchModal} className="searchModal__btnCancel">
+                취소
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

@@ -6,6 +6,8 @@
 
 .form-row label {
   width: 150px;
+  height: 30px;
+  line-height: 40px;
   font-weight: bold;
 }
 
