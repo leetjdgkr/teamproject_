@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect, useRef } from "react";
 import AdminInformation from "./adminInformation";
-import AddPersonModal from "./addPersonModal";  // 기존 추가 모달
+import AddPersonModal from "./addPersonModal";
 import AddButton from "./adminAddBtn";
 import UserContext from "../../login/js/userContext";
 import { useFilteredData } from "../js/adminPageLogic";
@@ -120,7 +120,7 @@ const AdminPage = () => {
   const onMouseMove = (e) => {
     if (!resizingCol.current) return;
     const deltaX = e.clientX - startX.current;
-    const newWidth = Math.max(startWidth.current + deltaX, 50); // 최소 너비 50px
+    const newWidth = Math.max(startWidth.current + deltaX, 50);
     setColumnWidths((prev) => ({
       ...prev,
       [resizingCol.current]: newWidth,
@@ -146,7 +146,7 @@ const AdminPage = () => {
         </button>
       </div>
 
-      <table style={{ tableLayout: "fixed", width: "100%" }}>
+      <table>
         <thead>
           <tr>
             <th style={{ width: 30 }}></th>
@@ -158,26 +158,12 @@ const AdminPage = () => {
                 placeholder="사원번호 검색"
                 onChange={(e) => handleFilterInput("employee_number", e.target.value)}
               />
-              <select
-                onChange={(e) => handleSortChange("employee_number", e.target.value)}
-              >
+              <select onChange={(e) => handleSortChange("employee_number", e.target.value)}>
                 <option value="">정렬 안함</option>
                 <option value="asc">오름차순</option>
                 <option value="desc">내림차순</option>
               </select>
-              <div
-                onMouseDown={(e) => onMouseDown(e, "employee_number")}
-                style={{
-                  position: "absolute",
-                  top: 0,
-                  right: 0,
-                  width: 5,
-                  height: "100%",
-                  cursor: "col-resize",
-                  userSelect: "none",
-                  zIndex: 10,
-                }}
-              />
+              <div onMouseDown={(e) => onMouseDown(e, "employee_number")} className="column-resizer" />
             </th>
 
             <th style={{ width: columnWidths.user_name, position: "relative" }}>
@@ -187,60 +173,22 @@ const AdminPage = () => {
                 placeholder="이름 검색"
                 onChange={(e) => handleFilterInput("user_name", e.target.value)}
               />
-              <select
-                onChange={(e) => handleSortChange("user_name", e.target.value)}
-              >
+              <select onChange={(e) => handleSortChange("user_name", e.target.value)}>
                 <option value="">정렬 안함</option>
                 <option value="asc">오름차순</option>
                 <option value="desc">내림차순</option>
               </select>
-              <div
-                onMouseDown={(e) => onMouseDown(e, "user_name")}
-                style={{
-                  position: "absolute",
-                  top: 0,
-                  right: 0,
-                  width: 5,
-                  height: "100%",
-                  cursor: "col-resize",
-                  userSelect: "none",
-                  zIndex: 10,
-                }}
-              />
+              <div onMouseDown={(e) => onMouseDown(e, "user_name")} className="column-resizer" />
             </th>
 
             <th style={{ width: columnWidths.resident_number, position: "relative" }}>
               주민등록번호
-              <div
-                onMouseDown={(e) => onMouseDown(e, "resident_number")}
-                style={{
-                  position: "absolute",
-                  top: 0,
-                  right: 0,
-                  width: 5,
-                  height: "100%",
-                  cursor: "col-resize",
-                  userSelect: "none",
-                  zIndex: 10,
-                }}
-              />
+              <div onMouseDown={(e) => onMouseDown(e, "resident_number")} className="column-resizer" />
             </th>
 
             <th style={{ width: columnWidths.address, position: "relative" }}>
               주소
-              <div
-                onMouseDown={(e) => onMouseDown(e, "address")}
-                style={{
-                  position: "absolute",
-                  top: 0,
-                  right: 0,
-                  width: 5,
-                  height: "100%",
-                  cursor: "col-resize",
-                  userSelect: "none",
-                  zIndex: 10,
-                }}
-              />
+              <div onMouseDown={(e) => onMouseDown(e, "address")} className="column-resizer" />
             </th>
 
             <th style={{ width: columnWidths.phone_number, position: "relative" }}>
@@ -250,37 +198,19 @@ const AdminPage = () => {
                 placeholder="전화번호 검색"
                 onChange={(e) => handleFilterInput("phone_number", e.target.value)}
               />
-              <select
-                onChange={(e) => handleSortChange("phone_number", e.target.value)}
-              >
+              <select onChange={(e) => handleSortChange("phone_number", e.target.value)}>
                 <option value="">정렬 안함</option>
                 <option value="asc">오름차순</option>
                 <option value="desc">내림차순</option>
               </select>
-              <div
-                onMouseDown={(e) => onMouseDown(e, "phone_number")}
-                style={{
-                  position: "absolute",
-                  top: 0,
-                  right: 0,
-                  width: 5,
-                  height: "100%",
-                  cursor: "col-resize",
-                  userSelect: "none",
-                  zIndex: 10,
-                }}
-              />
+              <div onMouseDown={(e) => onMouseDown(e, "phone_number")} className="column-resizer" />
             </th>
           </tr>
         </thead>
 
         <tbody>
           {peopleData.map((item) => (
-            <tr
-              key={item.employee_number}
-              onClick={() => handleRowClick(item)}
-              style={{ cursor: "pointer" }}
-            >
+            <tr key={item.employee_number} onClick={() => handleRowClick(item)} style={{ cursor: "pointer" }}>
               <td style={{ width: 30 }} onClick={(e) => e.stopPropagation()}>
                 <input
                   type="checkbox"
