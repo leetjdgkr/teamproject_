@@ -89,7 +89,7 @@ const Login = () => {
                     navigate('/data');
                 }, 500);
             } else {
-                setlogin_check_message("아이디 및 비밀번호가 틀렸습니다.");
+                setlogin_check_message("아이디 및 비밀번호, 인증코드가 틀렸습니다.");
             }
         }
 

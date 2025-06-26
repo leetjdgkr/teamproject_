@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect, useRef } from "react";
 import AdminInformation from "./adminInformation";
 import AddPersonModal from "./addPersonModal";  // 기존 추가 모달
 import AddButton from "./adminAddBtn";
@@ -24,11 +24,13 @@ const AdminPage = () => {
       setPeopleData(filteredDataFromServer);
     }
   }, [filteredDataFromServer]);
+
   useEffect(() => {
     if (userData && userData.length > 0 && peopleData.length === 0) {
       setPeopleData(userData);
     }
   }, [userData, peopleData]);
+
   const handleRowClick = (person) => {
     setSelectedPerson(person);
   };
@@ -71,6 +73,7 @@ const AdminPage = () => {
     setPeopleData(remaining);
     setCheckedItems({});
   };
+
   const handleFilterInput = (key, value) => {
     setQueryParams((prev) => ({
       ...prev,
@@ -80,6 +83,7 @@ const AdminPage = () => {
       },
     }));
   };
+
   const handleSortChange = (key, direction) => {
     if (!direction) {
       setQueryParams((prev) => ({ ...prev, sort: null }));
@@ -90,6 +94,45 @@ const AdminPage = () => {
       sort: { key, direction },
     }));
   };
+
+  // --- 리사이저 관련 state 및 ref ---
+  const [columnWidths, setColumnWidths] = useState({
+    employee_number: 150,
+    user_name: 150,
+    resident_number: 150,
+    address: 200,
+    phone_number: 150,
+  });
+
+  const resizingCol = useRef(null);
+  const startX = useRef(0);
+  const startWidth = useRef(0);
+
+  const onMouseDown = (e, colKey) => {
+    e.preventDefault();
+    resizingCol.current = colKey;
+    startX.current = e.clientX;
+    startWidth.current = columnWidths[colKey];
+    window.addEventListener("mousemove", onMouseMove);
+    window.addEventListener("mouseup", onMouseUp);
+  };
+
+  const onMouseMove = (e) => {
+    if (!resizingCol.current) return;
+    const deltaX = e.clientX - startX.current;
+    const newWidth = Math.max(startWidth.current + deltaX, 50); // 최소 너비 50px
+    setColumnWidths((prev) => ({
+      ...prev,
+      [resizingCol.current]: newWidth,
+    }));
+  };
+
+  const onMouseUp = () => {
+    resizingCol.current = null;
+    window.removeEventListener("mousemove", onMouseMove);
+    window.removeEventListener("mouseup", onMouseUp);
+  };
+
   return (
     <div className="adminPage_Bk">
       <div className="add-button-wrapper" style={{ marginBottom: "10px" }}>
@@ -102,53 +145,135 @@ const AdminPage = () => {
           선택 삭제
         </button>
       </div>
-      <table>
-       <thead>
+
+      <table style={{ tableLayout: "fixed", width: "100%" }}>
+        <thead>
           <tr>
-            <th></th>
-            <th>
+            <th style={{ width: 30 }}></th>
+
+            <th style={{ width: columnWidths.employee_number, position: "relative" }}>
               사원 번호
               <input
                 type="text"
                 placeholder="사원번호 검색"
                 onChange={(e) => handleFilterInput("employee_number", e.target.value)}
               />
-              <select onChange={(e) => handleSortChange("employee_number", e.target.value)}>
+              <select
+                onChange={(e) => handleSortChange("employee_number", e.target.value)}
+              >
                 <option value="">정렬 안함</option>
                 <option value="asc">오름차순</option>
                 <option value="desc">내림차순</option>
               </select>
+              <div
+                onMouseDown={(e) => onMouseDown(e, "employee_number")}
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  right: 0,
+                  width: 5,
+                  height: "100%",
+                  cursor: "col-resize",
+                  userSelect: "none",
+                  zIndex: 10,
+                }}
+              />
             </th>
-            <th>
+
+            <th style={{ width: columnWidths.user_name, position: "relative" }}>
               이름
               <input
                 type="text"
                 placeholder="이름 검색"
                 onChange={(e) => handleFilterInput("user_name", e.target.value)}
               />
-              <select onChange={(e) => handleSortChange("user_name", e.target.value)}>
+              <select
+                onChange={(e) => handleSortChange("user_name", e.target.value)}
+              >
                 <option value="">정렬 안함</option>
                 <option value="asc">오름차순</option>
                 <option value="desc">내림차순</option>
               </select>
+              <div
+                onMouseDown={(e) => onMouseDown(e, "user_name")}
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  right: 0,
+                  width: 5,
+                  height: "100%",
+                  cursor: "col-resize",
+                  userSelect: "none",
+                  zIndex: 10,
+                }}
+              />
             </th>
-            <th>주민등록번호</th>
-            <th>주소</th>
-            <th>
+
+            <th style={{ width: columnWidths.resident_number, position: "relative" }}>
+              주민등록번호
+              <div
+                onMouseDown={(e) => onMouseDown(e, "resident_number")}
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  right: 0,
+                  width: 5,
+                  height: "100%",
+                  cursor: "col-resize",
+                  userSelect: "none",
+                  zIndex: 10,
+                }}
+              />
+            </th>
+
+            <th style={{ width: columnWidths.address, position: "relative" }}>
+              주소
+              <div
+                onMouseDown={(e) => onMouseDown(e, "address")}
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  right: 0,
+                  width: 5,
+                  height: "100%",
+                  cursor: "col-resize",
+                  userSelect: "none",
+                  zIndex: 10,
+                }}
+              />
+            </th>
+
+            <th style={{ width: columnWidths.phone_number, position: "relative" }}>
               전화번호
               <input
                 type="text"
                 placeholder="전화번호 검색"
                 onChange={(e) => handleFilterInput("phone_number", e.target.value)}
               />
-              <select onChange={(e) => handleSortChange("phone_number", e.target.value)}>
+              <select
+                onChange={(e) => handleSortChange("phone_number", e.target.value)}
+              >
                 <option value="">정렬 안함</option>
                 <option value="asc">오름차순</option>
                 <option value="desc">내림차순</option>
               </select>
+              <div
+                onMouseDown={(e) => onMouseDown(e, "phone_number")}
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  right: 0,
+                  width: 5,
+                  height: "100%",
+                  cursor: "col-resize",
+                  userSelect: "none",
+                  zIndex: 10,
+                }}
+              />
             </th>
           </tr>
         </thead>
+
         <tbody>
           {peopleData.map((item) => (
             <tr
@@ -156,7 +281,7 @@ const AdminPage = () => {
               onClick={() => handleRowClick(item)}
               style={{ cursor: "pointer" }}
             >
-              <td onClick={(e) => e.stopPropagation()}>
+              <td style={{ width: 30 }} onClick={(e) => e.stopPropagation()}>
                 <input
                   type="checkbox"
                   className="custom-checkbox"
@@ -164,11 +289,11 @@ const AdminPage = () => {
                   onChange={() => handleCheckboxChange(item.employee_number)}
                 />
               </td>
-              <td>{item.employee_number}</td>
-              <td>{item.user_name}</td>
-              <td>{item.resident_number}</td>
-              <td>{item.address}</td>
-              <td>{item.phone_number}</td>
+              <td style={{ width: columnWidths.employee_number }}>{item.employee_number}</td>
+              <td style={{ width: columnWidths.user_name }}>{item.user_name}</td>
+              <td style={{ width: columnWidths.resident_number }}>{item.resident_number}</td>
+              <td style={{ width: columnWidths.address }}>{item.address}</td>
+              <td style={{ width: columnWidths.phone_number }}>{item.phone_number}</td>
             </tr>
           ))}
         </tbody>
