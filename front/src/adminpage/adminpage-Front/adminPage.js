@@ -110,6 +110,28 @@ const AdminPage = () => {
     window.removeEventListener("mouseup", onMouseUp);
   };
 
+  const handleDoubleClick = (colKey) => {
+    const texts = [
+      ...peopleData.map(person => String(person[colKey] ?? "")),
+      colKey // 헤더 텍스트도 포함
+    ];
+
+    const canvas = document.createElement("canvas");
+    const context = canvas.getContext("2d");
+    context.font = "16px Arial";
+
+    const maxWidth = texts.reduce((max, text) => {
+      const metrics = context.measureText(text);
+      return Math.max(max, metrics.width);
+    }, 0);
+
+    const adjustedWidth = Math.ceil(maxWidth + 40);
+    setColumnWidths((prev) => ({
+      ...prev,
+      [colKey]: adjustedWidth,
+    }));
+  };
+
   const openSearchModal = () => {
     setSearchForm(initialSearchForm);
     setShowSearchModal(true);
@@ -142,6 +164,17 @@ const AdminPage = () => {
     closeSearchModal();
   };
 
+  const renderResizableTH = (label, colKey) => (
+    <th style={{ width: columnWidths[colKey] }}>
+      {label}
+      <div
+        className="column-resizer"
+        onMouseDown={(e) => onMouseDown(e, colKey)}
+        onDoubleClick={() => handleDoubleClick(colKey)}
+      />
+    </th>
+  );
+
   return (
     <div className="adminPage_Bk">
       <div style={{ marginBottom: 10 }}>
@@ -162,11 +195,11 @@ const AdminPage = () => {
         <thead>
           <tr>
             <th style={{ width: 30 }}></th>
-            <th style={{ width: columnWidths.employee_number }}>사원 번호</th>
-            <th style={{ width: columnWidths.user_name }}>이름</th>
-            <th style={{ width: columnWidths.resident_number }}>주민등록번호</th>
-            <th style={{ width: columnWidths.address }}>주소</th>
-            <th style={{ width: columnWidths.phone_number }}>전화번호</th>
+            {renderResizableTH("사원 번호", "employee_number")}
+            {renderResizableTH("이름", "user_name")}
+            {renderResizableTH("주민등록번호", "resident_number")}
+            {renderResizableTH("주소", "address")}
+            {renderResizableTH("전화번호", "phone_number")}
           </tr>
         </thead>
         <tbody>
@@ -279,3 +312,4 @@ const AdminPage = () => {
 };
 
 export default AdminPage;
+
