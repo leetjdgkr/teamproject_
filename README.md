@@ -40,7 +40,7 @@ TRAMPROJECT_
 │                └── serializers.py       # 모델 데이터를 JSON으로 직렬화/역직렬화 처리
 │                └── urls.py              # API 엔드포인트 라우팅 (현재 `/items/` 단일 경로)
 │                └── views.py             # API 요청 분기 처리, `data_type`에 따라 기능 실행
-│    ├── dbsqlite3                        # Django 내장 데이터베이스 데이터베이스 스키마와 데이터를 파일 기반 저장
+│    ├── dbsqlite3                        # Django 내장 데이터베이스, 데이터베이스 스키마와 데이터를 파일 기반 저장
 │    ├── manage.py                        # Django 프로젝트 관리 커맨드 실행
 adminpage/
 │
