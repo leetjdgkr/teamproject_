@@ -36,7 +36,7 @@ TRAMPROJECT_
 │          └── myapp
 │                └── apps.py              # Django 앱 설정 등록 
 │                └── auth_utils.py        # 용자 및 관리자 로그인 인증 함수 구현
-│                └── models.py            # user(사용자), admin(관리자), 근무정보, 급여 등 데이터 모델 정의
+│                └── models.py            # user(사용자), admin(관리자), 근무정보, 급여 데이터 모델 정의
 │                └── serializers.py       # 모델 데이터를 JSON으로 직렬화/역직렬화 처리
 │                └── urls.py              # API 엔드포인트 라우팅 (현재 `/items/` 단일 경로)
 │                └── views.py             # API 요청 분기 처리, `data_type`에 따라 기능 실행
