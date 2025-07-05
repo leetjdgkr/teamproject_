@@ -29,6 +29,7 @@
 ## 디렉토리 구조
 
 ```
+TRAMPROJECT_
 adminpage/
 │
 ├── adminPage.js              # 메인 관리자 페이지
